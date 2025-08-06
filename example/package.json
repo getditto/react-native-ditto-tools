@@ -15,7 +15,7 @@
     "react": "19.1.0",
     "react-native": "0.80.2",
     "react-native-config": "^1.5.5",
-    "react-native-ditto-tools": "file:../"
+    "@dittolive/ditto-react-native-tools": "file:../"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
