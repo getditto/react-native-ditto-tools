@@ -28,7 +28,15 @@ yarn android
 cp .env.example .env
 ```
 
-2. Update the `.env` file with your Ditto credentials (see main README for details)
+2. Update the `.env` file with your Ditto credentials:
+
+```env
+DITTO_APP_ID=your_app_id_here
+DITTO_TOKEN=your_playground_token_here  
+DITTO_WEBSOCKET_URL=wss://your-websocket-url.com
+```
+
+**Note:** Never commit `.env` files to version control. The example app uses `react-native-config` to load these environment variables.
 
 ## Features Demonstrated
 
