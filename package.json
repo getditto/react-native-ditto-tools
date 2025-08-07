@@ -1,6 +1,6 @@
 {
   "name": "@dittolive/ditto-react-native-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native library for Ditto tools integration",
   "main": "src/index.ts",
   "module": "src/index.ts",
