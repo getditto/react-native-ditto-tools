@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, StyleSheet, useColorScheme, View, Text } from 'react-native';
-import { useDittoPermissions, useDitto, PeersList } from 'react-native-ditto-tools';
+import { useDittoPermissions, useDitto, PeersList } from '@dittolive/ditto-react-native-tools';
 
 export function AppContent() {
   const isDarkMode = useColorScheme() === 'dark';

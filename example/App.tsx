@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { DittoProvider } from 'react-native-ditto-tools';
+import { DittoProvider } from '@dittolive/ditto-react-native-tools';
 import { useDittoInitialization } from './hooks/useDittoInitalization';
 import { AppContent } from './components/AppContent';
 

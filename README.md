@@ -1,17 +1,17 @@
-# react-native-ditto-tools
+# @dittolive/ditto-react-native-tools
 
 React Native library for Ditto tools integration
 
 ## Installation
 
 ```sh
-npm install react-native-ditto-tools @dittolive/ditto
+npm install @dittolive/ditto-react-native-tools @dittolive/ditto
 ```
 
 or
 
 ```sh
-yarn add react-native-ditto-tools @dittolive/ditto
+yarn add @dittolive/ditto-react-native-tools @dittolive/ditto
 ```
 
 ## Platform Setup
@@ -25,7 +25,7 @@ After installing this library, you need to configure your React Native app for D
 
 ```typescript
 import React from 'react';
-import { DittoProvider, PeersList } from 'react-native-ditto-tools';
+import { DittoProvider, PeersList } from '@dittolive/ditto-react-native-tools';
 import { Ditto } from '@dittolive/ditto';
 
 // Initialize your Ditto instance
@@ -46,3 +46,7 @@ function App() {
   );
 }
 ```
+
+## Example App
+
+This repository includes a fully functional example app demonstrating all features. See the [example directory](./example) for setup instructions and implementation details.

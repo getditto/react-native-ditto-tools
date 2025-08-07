@@ -1,6 +1,6 @@
 # React Native Ditto Tools Example
 
-This example app demonstrates how to use the `react-native-ditto-tools` library.
+This example app demonstrates how to use the `@dittolive/ditto-react-native-tools` library.
 
 ## Prerequisites
 
@@ -23,15 +23,20 @@ yarn android
 
 ## Configuration
 
-Update the Ditto credentials in `hooks/useDittoInitialization.ts`:
-
-```typescript
-const identity = {
-  type: 'offlinePlayground',
-  appID: 'your-app-id',
-  offlineToken: 'your-offline-token',
-};
+1. Copy the example environment file:
+```bash
+cp .env.example .env
 ```
+
+2. Update the `.env` file with your Ditto credentials:
+
+```env
+DITTO_APP_ID=your_app_id_here
+DITTO_TOKEN=your_playground_token_here  
+DITTO_WEBSOCKET_URL=wss://your-websocket-url.com
+```
+
+**Note:** Never commit `.env` files to version control. The example app uses `react-native-config` to load these environment variables.
 
 ## Features Demonstrated
 

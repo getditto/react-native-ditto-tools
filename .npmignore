@@ -1,0 +1,71 @@
+# Example app
+example/
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Development files
+.eslintrc*
+.prettierrc*
+.watchmanconfig
+.editorconfig
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+__tests__/
+__mocks__/
+__fixtures__/
+*.test.ts
+*.test.tsx
+*.test.js
+*.test.jsx
+jest.config.*
+
+# Build tools config
+babel.config.js
+metro.config.js
+tsconfig.json
+tsconfig.*.json
+.babelrc
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# CI/CD
+.travis.yml
+.circleci/
+.github/
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Dependencies
+node_modules/
+
+# Claude AI
+.claude/
