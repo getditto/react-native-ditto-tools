@@ -49,4 +49,4 @@ function App() {
 
 ## Example App
 
-This repository includes a fully functional example app demonstrating all features. See the [example directory](./example) for setup instructions and implementation details.
+This repository includes a fully functional example app demonstrating all features. See the [example directory](https://github.com/getditto/react-native-ditto-tools/tree/main/example) for setup instructions and implementation details.
