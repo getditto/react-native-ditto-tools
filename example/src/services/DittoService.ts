@@ -92,7 +92,7 @@ export class DittoService {
       let permissionsGranted = await this.requestPermissions();
       if (!permissionsGranted) {
         console.warn('Required permissions not granted');
-        throw 'Permissions not granted';
+        throw new Error('Permissions not granted');
       }
 
       // Initialize Ditto
