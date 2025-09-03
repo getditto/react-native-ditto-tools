@@ -38,7 +38,7 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails, index 
         <View key={`status-container-${index}`} style={styles.statusContainer}>
           {peer.isConnectedToDittoCloud && (
             <View key={`cloud-badge-${index}`} style={styles.cloudBadge}>
-              <Text key={`cloud-badge-text${index}`} style={styles.cloudBadgeText}>Cloud</Text>
+              <Text key={`cloud-badge-text-${index}`} style={styles.cloudBadgeText}>Cloud</Text>
             </View>
           )}
         </View>
