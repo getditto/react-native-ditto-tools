@@ -9,6 +9,7 @@ import type { ListRenderItem } from 'react-native';
 import { Ditto } from '@dittolive/ditto';
 import { usePeers } from '../hooks/usePeers';
 import type { PeerInfo } from '../hooks/usePeers';
+import PeerItem from './PeerItem';
 
 interface PeersListProps {
   style?: any;
@@ -16,54 +17,6 @@ interface PeersListProps {
   ditto: Ditto;
   headerComponent?: () => React.ReactElement;
 }
-
-interface PeerItemProps {
-  peer: PeerInfo;
-  showConnectionDetails: boolean;
-  index: number;
-}
-
-const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails, index }) => {
-  const getConnectionCount = () => {
-    // Use the connections array length if available, otherwise fallback to individual counts
-    if (peer.connections && Array.isArray(peer.connections)) {
-      return peer.connections.length;
-    }
-    // Fallback for different peer structure
-    return Object.keys(peer.connections || {}).length;
-  };
-
-  const getConnectionTypes = () => {
-    if (peer.connections && Array.isArray(peer.connections)) {
-      return `${peer.connections.length} active connections`;
-    }
-    // Fallback to show connection count
-    const connCount = Object.keys(peer.connections || {}).length;
-    return `${connCount} connections`;
-  };
-
-  return (
-    <View key={`peer-item-${index}`} style={styles.peerItem}>
-      <View key={`peer-header-${index}`} style={styles.peerHeader}>
-        <Text key={`device-name-${index}`} style={styles.deviceName}>{peer.deviceName || 'Unknown Device'}</Text>
-        <View key={`status-container-${index}`} style={styles.statusContainer}>
-          {peer.isConnectedToDittoCloud && (
-            <View key={`cloud-badge-${index}`} style={styles.cloudBadge}>
-              <Text key={`cloud-badge-text${index}`} style={styles.cloudBadgeText}>Cloud</Text>
-            </View>
-          )}
-        </View>
-      </View>
-      
-      <Text key={`peer-id-text-${index}`} style={styles.sdkVersion}>Peer ID: {peer.peerKeyString || 'Unknown'}</Text>
-      <Text key={`sdk-version-text-${index}`} style={styles.sdkVersion}>SDK Version: {peer.dittoSdkVersion || 'Unknown'}</Text>
-      
-      {showConnectionDetails && getConnectionCount() > 0 && (
-        <Text key={`connection-details-${index}`} style={styles.connectionDetails}>{getConnectionTypes()}</Text>
-      )}
-    </View>
-  );
-};
 
 const PeersList: React.FC<PeersListProps> = ({
   style,
@@ -202,18 +155,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
-  headerContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 12,
-    backgroundColor: 'transparent',
-  },
-  headerText: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#8e8e93',
-    letterSpacing: 0.2,
-  },
   peerItem: {
     backgroundColor: '#ffffff',
     padding: 16,
@@ -264,10 +205,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  connectionCount: {
-    fontSize: 14,
-    color: '#666',
-  },
   divider: {
     height: 1,
     backgroundColor: '#e0e0e0',
@@ -278,11 +215,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginBottom: 4,
-  },
-  connectionDetails: {
-    fontSize: 12,
-    color: '#888',
-    fontFamily: 'Courier',
   },
   emptyContainer: {
     padding: 32,
