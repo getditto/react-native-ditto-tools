@@ -1,4 +1,4 @@
-import {Ditto, IdentityOnlinePlayground} from '@dittolive/ditto';
+import {Ditto, IdentityOnlinePlayground, Logger} from '@dittolive/ditto';
 import {PermissionsAndroid, Platform} from 'react-native';
 import {
   DITTO_APP_ID,
@@ -91,9 +91,11 @@ export class DittoService {
       // Request permissions first
       let permissionsGranted = await this.requestPermissions();
       if (!permissionsGranted) {
-        console.warn('Required permissions not granted');
         throw new Error('Permissions not granted');
       }
+
+      // Set minimum log level
+      Logger.minimumLogLevel = 'Debug';
 
       // Initialize Ditto
       this.ditto = new Ditto(this.createIdentity());
@@ -123,11 +125,8 @@ export class DittoService {
 
       // https://docs.ditto.live/sdk/latest/sync/syncing-data#start-sync
       this.ditto.startSync();
-
-      console.log('Ditto initialized successfully');
       return true;
     } catch (error) {
-      console.error('Failed to initialize Ditto:', error);
       this.ditto = null;
       return false;
     } finally {
@@ -138,7 +137,7 @@ export class DittoService {
   public async cleanup(): Promise<void> {
     try {
       if (this.ditto) {
-        await this.ditto.stopSync();
+        this.ditto.stopSync();
         this.ditto = null;
       }
     } catch (error) {

@@ -43,17 +43,17 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@dittolive/ditto": "4.11.4",
     "@types/react": "^18.2.0",
     "@types/react-native": "0.73.0",
     "react-native-builder-bob": "^0.20.0",
-    "typescript": "^5.9.2",
-    "@dittolive/ditto": "4.11.4",
-    "react-native-config": "^1.5.0"
+    "react-native-config": "^1.5.0",
+    "typescript": "^5.9.2"
   },
   "peerDependencies": {
+    "@dittolive/ditto": ">=4.11.4",
     "react": "*",
     "react-native": "*",
-    "@dittolive/ditto": ">=4.11.4",
     "react-native-config": "^1.5.0"
   },
   "resolutions": {
@@ -72,5 +72,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "react-native-fs": "^2.20.0"
   }
 }

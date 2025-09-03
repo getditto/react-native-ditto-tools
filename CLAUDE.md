@@ -49,10 +49,13 @@ yarn lint
 - **Components**: React components that wrap Ditto functionality
   - `DittoProvider`: Context provider that wraps the app with Ditto instance
   - `PeersList`: Component for displaying discovered peers
+  - `DiskUsage`: Component for displaying Ditto disk usage with automatic log export functionality
   
 - **Hooks**: Custom React hooks for Ditto operations
   - `useDittoContext`/`useDitto`: Access the Ditto instance from context
   - `usePeers`: Hook for observing and managing peer connections
+  - `useDiskUsage`: Hook for querying and monitoring disk usage from __small_peer_info
+  - `useLogExport`: Hook for exporting Ditto logs using Logger.exportToFile() and native save dialog
   - `usePermissions`: Hook for handling required permissions
 
 ### Key Technical Details
@@ -61,12 +64,32 @@ yarn lint
 - TypeScript-first with strict type checking enabled
 - Built using `react-native-builder-bob` for CommonJS, ESM, and TypeScript outputs
 - Peer dependencies: `@dittolive/ditto` (>=4.11.4), `react-native-config`
+- Dependencies: `@react-native-documents/picker` for native file save dialogs
+
+### Component Details
+
+#### DiskUsage Component
+- **Purpose**: Displays Ditto's disk usage breakdown by querying the `__small_peer_info` collection
+- **Data Source**: Uses `SELECT * FROM __small_peer_info` DQL query to fetch local peer information
+- **Key Features**:
+  - Shows disk usage for different Ditto components (store, replication, attachments, auth)
+  - **Automatic Log Export**: "Export Logs" button prompts user to select directory, then uses `Logger.exportToFile()` to save directly to chosen location
+  - Export button for data directory (placeholder functionality)
+  - Real-time data refresh with lastUpdatedAt footer
+  - Error and loading states with disabled button during export
+  - Follows same patterns as PeersList component
+- **Hooks**: 
+  - Uses `useDiskUsage` which executes queries against the Ditto store
+  - Uses `useLogExport` which handles directory selection and log export with `@react-native-documents/picker`
+- **Data Structure**: Parses `device_disk_usage` object from __small_peer_info documents
+- **Dependencies**: Requires `@react-native-documents/picker` for native file save dialogs
 
 ### Example App Configuration
 The example app demonstrates library usage with environment-based configuration:
 - Uses `react-native-config` for environment variables
 - Requires `.env` file with `DITTO_APP_ID`, `DITTO_TOKEN`, and `DITTO_WEBSOCKET_URL`
 - Shows practical implementation of peer discovery and connection management
+- Includes disk usage monitoring screen at `/screens/DiskUsageScreen.tsx`
 
 # General Rules
 - Keep conversations concise. Do not give compliments. Do not apologize. Do not try to please the user. Do not be chatty or witty.  Most Ditto developers usually work on a Mac, but are required to occasionally work with Unix and Windows to test this project. 

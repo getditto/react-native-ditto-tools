@@ -77,6 +77,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libdittoffi.so'
+        pickFirst 'lib/armeabi-v7a/libdittoffi.so'
+        pickFirst 'lib/x86/libdittoffi.so'
+        pickFirst 'lib/x86_64/libdittoffi.so'
+    }
+
     namespace "com.example"
     defaultConfig {
         applicationId "com.example"
