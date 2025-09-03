@@ -10,7 +10,7 @@ export const usePeers = (ditto: Ditto) => {
 
   useEffect(() => {
     console.log('usePeers: Setting up peer observation');
-    let observer: Observer;
+    let observer: Observer | null = null;
 
     const setupPeerObserver = async () => {
       try {
