@@ -3,7 +3,7 @@ import { SafeAreaContainer } from '../components/SafeAreaContainer';
 import DittoContext from '../providers/DittoContext';
 import { PeersList } from '@dittolive/ditto-react-native-tools';
 import { colors, typography, spacing } from '../styles';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 export const PeersListScreen: React.FC = () => {
   const context = useContext(DittoContext);
@@ -13,9 +13,19 @@ export const PeersListScreen: React.FC = () => {
   const { dittoService } = context;
   const ditto = dittoService.getDitto();
 
+  if (!ditto) {
+    return (
+      <SafeAreaContainer>
+        <View style={styles.loadingState}>
+          <Text style={styles.loadingText}>Loading...</Text>
+        </View>
+      </SafeAreaContainer>
+    );
+  }
+
   return (
     <SafeAreaContainer>
-      <PeersList ditto={ditto} style={styles.container} />
+      <PeersList ditto={ditto} showConnectionDetails={true} style={styles.container} />
     </SafeAreaContainer>
   );
 };
