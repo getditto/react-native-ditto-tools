@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDitto } from './useDitto.ts';
+import { useDitto } from './useDitto';
 
 export interface PermissionsHealth {
   bluetooth: boolean;
