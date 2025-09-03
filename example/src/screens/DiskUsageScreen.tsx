@@ -31,9 +31,6 @@ export const DiskUsageScreen: React.FC = () => {
   return (
     <SafeAreaContainer>
       <DiskUsage
-        ditto={ditto}
-        style={styles.container}
-        onExportDataDirectory={handleExportDataDirectory}
       />
     </SafeAreaContainer>
   );
