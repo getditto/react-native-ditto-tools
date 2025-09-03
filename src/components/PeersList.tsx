@@ -71,7 +71,7 @@ const PeersList: React.FC<PeersListProps> = ({
   headerComponent,
 }) => {
 
-  // santity check - ditto can't be null or not initialized
+  // sanity check - ditto can't be null or not initialized
   const renderDittoNull = () => (
     <Text style={styles.headerText}>
       Error:  Passed in Ditto instance is null.  Make sure you have initialized Ditto and passed it to the PeersList component.
