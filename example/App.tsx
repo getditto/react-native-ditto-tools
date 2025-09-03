@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { DittoProvider } from '@dittolive/ditto-react-native-tools';
-import { useDittoInitialization } from './hooks/useDittoInitalization';
+import { useDitto } from './hooks/useDitto';
 import { AppContent } from './components/AppContent';
 
 function App() {
-  const { ditto } = useDittoInitialization();
+  const { ditto, isInitializing } = useDitto();
 
-  if (!ditto) {
+  if (isInitializing || !ditto) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Initializing Ditto...</Text>
