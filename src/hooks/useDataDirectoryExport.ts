@@ -39,8 +39,6 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
       setIsExporting(true);
       setError(null);
       setCleanupWarning(null);
-
-
       // Generate filename with timestamp
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const zipFileName = `ditto-data-${timestamp}.zip`;
