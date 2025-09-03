@@ -1,0 +1,66 @@
+console.js:614 Running "example" with {"rootTag":1,"initialProps":{},"fabric":true}
+Welcome to React Native DevTools
+Debugger integration: iOS Bridgeless (RCTHost)
+useLogExport.ts:14 useLogExport called with ditto: true
+useLogExport.ts:64 useLogExport returning: {isExporting: false, error: null, exportLogs: ƒ}
+useLogExport.ts:65 exportLogs function: function
+useLogExport.ts:14 useLogExport called with ditto: true
+useLogExport.ts:64 useLogExport returning: {isExporting: false, error: null, exportLogs: ƒ}
+useLogExport.ts:65 exportLogs function: function
+console.js:614 TypeError: property is not writable
+anonymous @ console.js:614
+reactConsoleErrorHandler @ ExceptionsManager.js:182
+overrideMethod @ backend.js:17416
+anonymous @ setUpDeveloperTools.js:62
+registerError @ LogBox.js:211
+anonymous @ LogBox.js:79
+reportException @ ExceptionsManager.js:111
+handleException @ ExceptionsManager.js:171
+handleError @ setUpErrorHandling.js:25
+reportFatalError @ error-guard.js:49
+guardedLoadModule @ require.js:179
+metroRequire @ require.js:92
+findNodeHandle @ RendererImplementation.js:74
+__connectAnimatedView @ AnimatedProps.js:215
+__makeNative @ AnimatedProps.js:198
+__makeNative @ AnimatedWithChildren.js:33
+anonymous @ AnimatedStyle.js:20
+__makeNative @ AnimatedStyle.js:219
+__makeNative @ AnimatedWithChildren.js:33
+__startAnimationIfNative @ Animation.js:118
+start @ TimingAnimation.js:120
+start @ TimingAnimation.js:136
+animate @ AnimatedValue.js:247
+start @ AnimatedImplementation.js:231
+start @ AnimatedImplementation.js:238
+_setOpacityTo @ TouchableOpacity.js:197
+_opacityActive @ TouchableOpacity.js:201
+onPressIn @ TouchableOpacity.js:170
+_activate @ Pressability.js:771
+_performTransitionSideEffects @ Pressability.js:738
+_receiveSignal @ Pressability.js:696
+onResponderGrant @ Pressability.js:468
+executeDirectDispatch @ ReactFabric-dev.js:273
+setResponderAndExtractTransfer @ ReactFabric-dev.js:1606
+extractEvents @ ReactFabric-dev.js:1748
+extractPluginEvents @ ReactFabric-dev.js:2881
+runExtractedPluginEventsInBatch @ ReactFabric-dev.js:2903
+anonymous @ ReactFabric-dev.js:2956
+batchedUpdates @ ReactFabric-dev.js:22998
+batchedUpdates$1 @ ReactFabric-dev.js:2792
+dispatchEvent @ ReactFabric-dev.js:2925
+Show 41 more frames
+Show less
+console.js:614 TypeError: Cannot read property 'default' of undefined
+anonymous @ console.js:614
+reactConsoleErrorHandler @ ExceptionsManager.js:182
+overrideMethod @ backend.js:17416
+anonymous @ setUpDeveloperTools.js:62
+registerError @ LogBox.js:211
+anonymous @ LogBox.js:79
+reportException @ ExceptionsManager.js:111
+handleException @ ExceptionsManager.js:171
+handleError @ setUpErrorHandling.js:25
+reportFatalError @ error-guard.js:49
+Show 10 more frames
+Show less

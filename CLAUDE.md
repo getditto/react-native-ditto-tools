@@ -94,6 +94,7 @@ The example app demonstrates library usage with environment-based configuration:
 # General Rules
 - Keep conversations concise. Do not give compliments. Do not apologize. Do not try to please the user. Do not be chatty or witty.  Most Ditto developers usually work on a Mac, but are required to occasionally work with Unix and Windows to test this project. 
 - If you need useful commands or scripts that are not installed on this machine, you can ask me to install them.
+- **ALWAYS KILL METRO WHEN DONE**: After completing iOS/Android builds or testing, always kill the Metro bundler using `lsof -ti:8081 | xargs kill -9` to free up the port.
 
 # CRITICAL VERSION CONSTRAINTS
 - **NEVER CHANGE REACT NATIVE VERSION**: This project MUST use React Native 0.77.1 for both the library and example app. DO NOT change this version for any reason without explicit permission.

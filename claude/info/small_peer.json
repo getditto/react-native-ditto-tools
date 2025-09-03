@@ -1,0 +1,132 @@
+{
+  "_id" : "pkAocCgkMDeKz3l-zb1HAa8EePBv8PUZL27S9YNRGCmhbA3Hk872Q",
+  "big_peer_connection_history" : [
+    {
+      "event" : "connected",
+      "timestamp" : "2025-09-03T13:42:51Z"
+    },
+    {
+      "event" : "disconnected",
+      "timestamp" : "2025-08-28T14:45:50Z"
+    },
+    {
+      "event" : "connected",
+      "timestamp" : "2025-08-28T14:40:51Z"
+    }
+  ],
+  "connections_by_transport" : {
+    "AccessPoint" : 2,
+    "Bluetooth" : 1,
+    "P2PWiFi" : 0,
+    "WebSocket" : 0
+  },
+  "device_disk_usage" : {
+    "device_available" : 122298909460,
+    "device_total" : 994662584320,
+    "ditto_attachments" : 374790,
+    "ditto_auth" : 9064,
+    "ditto_replication" : 532046460,
+    "ditto_store" : 130193784,
+    "ditto_total" : 667332423
+  },
+  "device_name" : "Aaron’s Mac Studio",
+  "ditto_sdk_commit" : "92d8e0193e",
+  "ditto_sdk_language" : "Swift",
+  "ditto_sdk_platform" : "macOS",
+  "ditto_sdk_version" : "4.12.0",
+  "last_updated_at" : "2025-09-03T13:42:55.754Z",
+  "local_subscriptions" : {
+    "queries" : [
+      {
+        "query" : "SELECT * FROM COLLECTION __presence WHERE v == 3 && t > 1756857600000"
+      },
+      {
+        "query" : "SELECT * FROM COLLECTION __small_peer_info WHERE _id == \"pkAocCgkMDeKz3l-zb1HAa8EePBv8PUZL27S9YNRGCmhbA3Hk872Q\""
+      },
+      {
+        "query" : "SELECT * FROM comments"
+      },
+      {
+        "query" : "SELECT * FROM movies"
+      }
+    ],
+    "truncated" : false
+  },
+  "logs_config" : {
+    "enabled" : true,
+    "minimum_level" : "DEBUG"
+  },
+  "reaper" : {
+    "last_reap_time" : "2025-08-27T20:18:06.558Z",
+    "num_tombstones_reaped" : 0
+  },
+  "store" : {
+    "truncated" : false,
+    "user_collections" : {
+      "comments" : {
+        "num_docs" : 41087
+      },
+      "movies" : {
+        "num_docs" : 21350
+      }
+    }
+  },
+  "transport_config_change_events" : [
+    {
+      "cfg" : {
+        "cloud" : {
+          "enabled" : false,
+          "sync_url" : ""
+        },
+        "connect" : {
+          "retry_interval" : 5000,
+          "tcp_servers" : [
+
+          ],
+          "websocket_urls" : [
+            "wss://m1tpgv.cloud.dittolive.app"
+          ]
+        },
+        "global" : {
+          "routing_hint" : 0,
+          "sync_group" : 0
+        },
+        "listen" : {
+          "http" : {
+            "enabled" : false,
+            "interface_ip" : "[::]",
+            "is_identity_provider" : false,
+            "port" : 80,
+            "static_content_path" : null,
+            "tls_certificate_path" : null,
+            "tls_key_path" : null,
+            "websocket_sync" : false
+          },
+          "tcp" : {
+            "enabled" : false,
+            "interface_ip" : "[::]",
+            "port" : 4040
+          }
+        },
+        "peer_to_peer" : {
+          "awdl" : {
+            "enabled" : true
+          },
+          "bluetooth_le" : {
+            "enabled" : true
+          },
+          "lan" : {
+            "enabled" : true,
+            "mdns_enabled" : true,
+            "multicast_enabled" : true
+          },
+          "wifi_aware" : {
+            "enabled" : false
+          }
+        }
+      },
+      "timestamp" : "2025-09-03T13:42:50Z"
+    }
+  ],
+  "version" : 1
+}

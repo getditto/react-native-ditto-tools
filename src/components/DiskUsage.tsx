@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  Button,
   Pressable,
 } from 'react-native';
 import type { ListRenderItem, ViewStyle } from 'react-native';
@@ -12,6 +11,7 @@ import { Ditto } from '@dittolive/ditto';
 import { useDiskUsage } from '../hooks/useDiskUsage';
 import type { DiskUsageData } from '../hooks/useDiskUsage';
 import { useLogExport } from '../hooks/useLogExport';
+import { useDataDirectoryExport } from '../hooks/useDataDirectoryExport';
 
 interface DiskUsageItem {
   key: string;
@@ -23,17 +23,16 @@ interface DiskUsageItem {
 interface DiskUsageProps {
   ditto: Ditto;
   style?: ViewStyle;
-  onExportDataDirectory?: () => void;
 }
 
 const DiskUsage: React.FC<DiskUsageProps> = ({
   ditto,
   style,
-  onExportDataDirectory,
 }) => {
   const { diskUsageInfo, isLoading, error } = useDiskUsage(ditto);
   const logExportResult = useLogExport(ditto);
   const { exportLogs, isExporting } = logExportResult || { exportLogs: null, isExporting: false };
+  const { exportDataDirectory, isExporting: isExportingData, error: dataExportError, cleanupWarning } = useDataDirectoryExport(ditto);
 
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return '0 B';
@@ -109,15 +108,38 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
         
         <View style={styles.buttonWrapper}>
         <Pressable 
-            style={styles.testButtonText}
-            onPress={() => {
+            style={[
+              styles.testButtonText,
+              isExportingData && styles.testButtonDisabled,
+            ]}
+            onPress={async () => {
+              try {
+                await exportDataDirectory();
+              } catch (err) {
+                console.error('Data directory export failed:', err);
+              }
             }}
+            disabled={isExportingData}
           >
             <Text style={styles.testButtonInnerText}>
-              {'Export Data Directory'}
+              {isExportingData ? 'Exporting...' : 'Export Data Directory'}
             </Text>
           </Pressable>
         </View>
+        
+        {/* Error Messages */}
+        {dataExportError && (
+          <View style={styles.errorMessageContainer}>
+            <Text style={styles.errorMessageText}>⚠️ {dataExportError}</Text>
+          </View>
+        )}
+        
+        {/* Cleanup Warning */}
+        {cleanupWarning && (
+          <View style={styles.warningMessageContainer}>
+            <Text style={styles.warningMessageText}>⚠️ {cleanupWarning}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -248,6 +270,38 @@ const styles = StyleSheet.create({
   testButtonInnerText: {
     color: 'white',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  testButtonDisabled: {
+    backgroundColor: '#999',
+    opacity: 0.6,
+  },
+  errorMessageContainer: {
+    backgroundColor: '#ffe6e6',
+    marginHorizontal: 16,
+    marginTop: 12,
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#ff3b30',
+  },
+  errorMessageText: {
+    color: '#cc0000',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  warningMessageContainer: {
+    backgroundColor: '#fff3cd',
+    marginHorizontal: 16,
+    marginTop: 8,
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#ff9500',
+  },
+  warningMessageText: {
+    color: '#b8860b',
+    fontSize: 14,
     fontWeight: '500',
   },
   diskUsageItem: {

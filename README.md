@@ -5,13 +5,38 @@ React Native library for Ditto tools integration
 ## Installation
 
 ```sh
-npm install @dittolive/ditto-react-native-tools @dittolive/ditto @react-native-documents/picker
+npm install @dittolive/ditto-react-native-tools @dittolive/ditto react-native-config react-native-fs react-native-zip-archive
 ```
 
 or
 
 ```sh
-yarn add @dittolive/ditto-react-native-tools @dittolive/ditto @react-native-documents/picker
+yarn add @dittolive/ditto-react-native-tools @dittolive/ditto react-native-config react-native-fs react-native-zip-archive
+```
+
+### Required Dependencies
+
+This library requires the following peer dependencies to be installed in your app:
+
+- `@dittolive/ditto` - Core Ditto SDK
+- `react-native-config` - Environment variable support  
+- `react-native-fs` - File system operations for log export and data directory cleanup
+- `react-native-zip-archive` - Directory compression for data export functionality
+
+### iOS Setup
+
+After installing dependencies, run:
+
+```sh
+cd ios && pod install && cd ..
+```
+
+### Android Setup
+
+For React Native 0.77.1+, auto-linking should handle Android setup automatically. If you encounter linking issues, clean your build:
+
+```sh
+cd android && ./gradlew clean && cd ..
 ```
 
 ## Platform Setup
@@ -236,3 +261,17 @@ The example app uses environment variables for Ditto configuration. After changi
    ```
 
 > **Note**: Environment variables are compiled into the JavaScript bundle at build time, so you must rebuild the app after changing `.env` values.
+
+## Credits
+
+This library utilizes the following open-source projects:
+
+### Core Dependencies
+- **[Ditto](https://github.com/getditto/ditto)** - Edge sync platform for building real-time collaborative apps
+- **[React Native Config](https://github.com/luggit/react-native-config)** - Environment variables for React Native apps
+
+### Export Functionality  
+- **[react-native-fs](https://github.com/itinance/react-native-fs)** - File system access for React Native apps
+- **[react-native-zip-archive](https://github.com/mockingbot/react-native-zip-archive)** - ZIP archive creation and extraction for React Native
+
+We greatly appreciate the maintainers and contributors of these projects for making this library possible.
