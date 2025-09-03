@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useDittoContext } from './useDittoContext';
-import type { Peer } from '@dittolive/ditto';
+import type { Ditto, Peer, Observer } from '@dittolive/ditto';
 
 // Re-export Ditto's Peer type for convenience
 export type PeerInfo = Peer;
 
-export const usePeers = () => {
-  const { ditto } = useDittoContext();
+export const usePeers = (ditto: Ditto) => {
   const [peers, setPeers] = useState<PeerInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     console.log('usePeers: Setting up peer observation');
-    let observer: any;
+    let observer: Observer;
 
     const setupPeerObserver = async () => {
       try {

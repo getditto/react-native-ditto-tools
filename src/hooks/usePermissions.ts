@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { PermissionsAndroid, Platform, Permission } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
+import type { Permission } from 'react-native';
 
 export const useDittoPermissions = () => {
   console.log('useDittoPermissions called');

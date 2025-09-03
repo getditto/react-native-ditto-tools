@@ -4,12 +4,14 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import { usePeers, PeerInfo } from '../hooks/usePeers';
+import { Ditto } from '@dittolive/ditto';
+import { usePeers } from '../hooks/usePeers';
+import type { PeerInfo } from '../hooks/usePeers';
 
 interface PeersListProps {
   style?: any;
   showConnectionDetails?: boolean;
-  emptyMessage?: string;
+  ditto?: Ditto;
   headerComponent?: () => React.ReactElement;
 }
 
@@ -65,10 +67,23 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
 const PeersList: React.FC<PeersListProps> = ({
   style,
   showConnectionDetails = true,
-  emptyMessage = 'No peers found',
+  ditto = null,
   headerComponent,
 }) => {
-  const { peers, isLoading, peerCount } = usePeers();
+
+  // santity check - ditto can't be null or not initialized
+  const renderDittoNull = () => (
+    <Text style={styles.headerText}>
+      Error:  Passed in Ditto instance is null.  Make sure you have initialized Ditto and passed it to the PeersList component.
+    </Text>
+  );
+
+  if (ditto === null) {
+    return renderDittoNull();
+  }
+
+  const emptyMessage = 'No peers found';
+  const { peers, isLoading, peerCount } = usePeers(ditto);
 
   const renderPeer = (item: PeerInfo, index: number) => (
     <PeerItem 
