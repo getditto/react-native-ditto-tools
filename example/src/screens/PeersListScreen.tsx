@@ -1,4 +1,4 @@
-t import React, { useContext } from 'react';
+import React, { useContext } from 'react';
 import { SafeAreaContainer } from '../components/SafeAreaContainer';
 import DittoContext from '../providers/DittoContext';
 import { PeersList } from '@dittolive/ditto-react-native-tools';
