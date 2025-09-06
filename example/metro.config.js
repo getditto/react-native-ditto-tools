@@ -25,14 +25,34 @@ const config = {
     ],
     
     // Explicitly map only the modules we need from the library
-    extraNodeModules: {
-      'react': path.resolve(__dirname, 'node_modules/react'),
-      'react-native': path.resolve(__dirname, 'node_modules/react-native'),
-      '@dittolive/ditto': path.resolve(libraryPath, 'node_modules/@dittolive/ditto'),
-      'react-native-config': path.resolve(libraryPath, 'node_modules/react-native-config'),
-      'react-native-fs': path.resolve(libraryPath, 'node_modules/react-native-fs'),
-      'react-native-zip-archive': path.resolve(libraryPath, 'node_modules/react-native-zip-archive'),
-    },
+    extraNodeModules: (() => {
+      const modules = [
+        'react',
+        'react-native',
+        '@dittolive/ditto',
+        'react-native-config',
+        'react-native-fs',
+        'react-native-zip-archive',
+      ];
+      const result = {};
+      for (const mod of modules) {
+        try {
+          // Try to resolve the module from the example app first, then from the library
+          let resolvedPath;
+          try {
+            resolvedPath = path.dirname(require.resolve(`${mod}/package.json`, { paths: [path.resolve(__dirname, 'node_modules')] }));
+          } catch (e) {
+            resolvedPath = path.dirname(require.resolve(`${mod}/package.json`, { paths: [path.resolve(libraryPath, 'node_modules')] }));
+          }
+          if (fs.existsSync(resolvedPath)) {
+            result[mod] = resolvedPath;
+          }
+        } catch (e) {
+          // Module not found, skip
+        }
+      }
+      return result;
+    })(),
     
     // Enable symlinks (default in RN 0.77.1, but explicit for clarity)
     unstable_enableSymlinks: true,
