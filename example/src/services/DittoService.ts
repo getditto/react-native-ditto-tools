@@ -81,7 +81,6 @@ export class DittoService {
 
   public async initialize(): Promise<boolean> {
     if (this.ditto || this.isInitializing) {
-      console.log('Ditto already initialized');
       return this.ditto !== null;
     }
 
@@ -135,13 +134,9 @@ export class DittoService {
   }
 
   public async cleanup(): Promise<void> {
-    try {
-      if (this.ditto) {
-        this.ditto.stopSync();
-        this.ditto = null;
-      }
-    } catch (error) {
-      console.error('Error during Ditto cleanup:', error);
+    if (this.ditto) {
+      this.ditto.stopSync();
+      this.ditto = null;
     }
   }
 
