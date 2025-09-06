@@ -47,9 +47,6 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
       const sourceDirectory = ditto.persistenceDirectory;
       const tempDirectory = getTempDirectory();
       const zipFilePath = `${tempDirectory}${tempDirectory.endsWith('/') ? '' : '/'}${zipFileName}`;
-      
-      console.log('Zipping data directory:', sourceDirectory);
-      
       let zipCreated = false;
       
       try {
@@ -71,12 +68,10 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
         if (zipCreated) {
           try {
             await RNFS.unlink(zipFilePath);
-            console.log('Temp zip file cleaned up successfully:', zipFilePath);
           } catch (cleanupError) {
             // Don't throw cleanup errors - just warn the user
             const warningMessage = `Warning: Could not delete temporary file ${zipFileName}. You may need to manually clean it up to free disk space.`;
             setCleanupWarning(warningMessage);
-            console.warn('Failed to clean up zip file:', cleanupError);
           }
         }
       }
