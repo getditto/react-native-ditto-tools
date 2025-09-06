@@ -28,10 +28,9 @@ const PeersList: React.FC<PeersListProps> = ({
   const emptyMessage = 'No peers found';
   const { peers, localPeer, isLoading, peerCount, error } = usePeers(ditto);
 
-  const renderPeer: ListRenderItem<PeerInfo> = ({ item, index }) => (
+  const renderPeer: ListRenderItem<PeerInfo> = ({ item }) => (
     <PeerItem 
       peer={item} 
-      index={index}
       showConnectionDetails={showConnectionDetails} 
     />
   );
@@ -47,78 +46,74 @@ const PeersList: React.FC<PeersListProps> = ({
 
   const renderHeader = () => (
     <>
-    <Text key={`local-peer-header-text`} style={styles.peerHeaderText}>
-      LOCAL PEER
-    </Text>
-    <View key={`local-peer-item`} style={styles.peerItem}>
-      {headerComponent && headerComponent()}
-      <View key={`local-peer-header`} style={styles.peerHeader}>
-        <Text key={`local-peer-device-name`} style={styles.deviceName}>{localPeer?.deviceName || 'Unknown Device'}</Text>
-        <View key={'local-peer-status-container'} style={styles.statusContainer}>
-          {localPeer?.isConnectedToDittoCloud && (
-            <View key={'local-peer-cloud-badge'} style={styles.cloudBadge}>
-              <Text key={'local-peer-cloud-badge-text'} style={styles.cloudBadgeText}>Cloud</Text>
-            </View>
-          )}
+      <Text style={styles.peerHeaderText}>LOCAL PEER</Text>
+      <View style={styles.peerItem}>
+        {headerComponent && headerComponent()}
+        <View style={styles.peerHeader}>
+          <Text style={styles.deviceName}>{localPeer?.deviceName || 'Unknown Device'}</Text>
+          <View style={styles.statusContainer}>
+            {localPeer?.isConnectedToDittoCloud && (
+              <View style={styles.cloudBadge}>
+                <Text style={styles.cloudBadgeText}>Cloud</Text>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
-      <Text key={`local-peer-sdk-version-text`} style={styles.sdkVersion}>SDK Version: {localPeer?.dittoSdkVersion || 'Unknown'}</Text>
-      
-      {localPeer?.connections && (
-        <View key={'local-peer-connections-container'} style={styles.connectionsContainer}>
-          <Text key={'local-peer-local-connections-title'} style={styles.connectionsTitle}>Local Connections:</Text>
-          {Array.isArray(localPeer.connections) ? (
-            localPeer.connections.map((connection, index) => (
-              <React.Fragment key={`header-connection-fragment-${index}`}>
-                <Text key={`header-connection-info-text-${index}`} style={styles.connectionItem}>
-                {connection.peerKeyString1} - {connection.connectionType}
+        <Text style={styles.sdkVersion}>SDK Version: {localPeer?.dittoSdkVersion || 'Unknown'}</Text>
+        
+        {localPeer?.connections && (
+          <View style={styles.connectionsContainer}>
+            <Text style={styles.connectionsTitle}>Local Connections:</Text>
+            {Array.isArray(localPeer.connections) ? (
+              localPeer.connections.map((connection, index) => (
+                <React.Fragment key={`connection-${index}-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}`}>
+                  <Text style={styles.connectionItem}>
+                    {connection.peerKeyString1} - {connection.connectionType}
+                  </Text>
+                  <View style={styles.divider} />
+                </React.Fragment>
+              ))
+            ) : (
+              Object.entries(localPeer.connections).map(([type, count]) => (
+                <Text key={type} style={styles.connectionItem}>
+                  {type}: {String(count)}
                 </Text>
-                <View key={`header-divider-view-${index}`} style={styles.divider} />
-              </React.Fragment>
-            ))
-          ) : (
-            Object.entries(localPeer.connections).map(([type, count], index) => (
-              <Text key={`header-count-text-${index}`} style={styles.connectionItem}>
-                {type}: {String(count)}
-              </Text>
-            ))
-          )}
-        </View>
-      )}
-      
-      <Text key={'local-peer-loading-message'} style={styles.peerHeader}>
-        {isLoading ? 'Loading peers...' : `${peerCount} peer${peerCount !== 1 ? 's' : ''} found`}
-      </Text>
-    </View>
-    <Text key={'local-peer-remote-peers-header-text'} style={styles.peerHeaderText}>
-      REMOTE PEERS
-    </Text>
+              ))
+            )}
+          </View>
+        )}
+        
+        <Text style={styles.peerHeader}>
+          {isLoading ? 'Loading peers...' : `${peerCount} peer${peerCount !== 1 ? 's' : ''} found`}
+        </Text>
+      </View>
+      <Text style={styles.peerHeaderText}>REMOTE PEERS</Text>
     </>
   );
 
-  const keyExtractor = (item: PeerInfo, index: number) => 
-    `${item.deviceName || 'peer'}-${item.peerKeyString || index}`;
+  const keyExtractor = (item: PeerInfo) => 
+    item.peerKeyString || item.deviceName || `peer-${Date.now()}-${Math.random()}`;
 
   if (error) {
     return (
-      <View key={'local-peer-error-container'} style={[styles.container, styles.errorContainer, style]}>
-        <Text key={'local-peer-error-text'} style={styles.errorText}>⚠️ Error loading peers</Text>
-        <Text key={'local-peer-error-subtext'} style={styles.errorSubtext}>{error}</Text>
+      <View style={[styles.container, styles.errorContainer, style]}>
+        <Text style={styles.errorText}>⚠️ Error loading peers</Text>
+        <Text style={styles.errorSubtext}>{error}</Text>
       </View>
     );
   }
 
   if (isLoading) {
     return (
-      <View key={'local-peer-loading-container'} style={[styles.container, styles.loadingContainer, style]}>
-        <Text key={'local-peer-loading-indicator'} style={styles.loadingIndicator}>⏳</Text>
-        <Text key={'local-peer-loading-text'} style={styles.loadingText}>Discovering peers...</Text>
+      <View style={[styles.container, styles.loadingContainer, style]}>
+        <Text style={styles.loadingIndicator}>⏳</Text>
+        <Text style={styles.loadingText}>Discovering peers...</Text>
       </View>
     );
   }
 
   return (
-    <View key={'local-peer-list-container'} style={[styles.container, style]}>
+    <View style={[styles.container, style]}>
       <FlatList
         data={peers}
         renderItem={renderPeer}

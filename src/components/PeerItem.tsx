@@ -9,10 +9,9 @@ import type { PeerInfo } from '../hooks/usePeers';
 interface PeerItemProps {
   peer: PeerInfo;
   showConnectionDetails: boolean;
-  index: number;
 }
 
-const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails, index }) => {
+const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
   const getConnectionCount = () => {
     // Use the connections array length if available, otherwise fallback to individual counts
     if (peer.connections && Array.isArray(peer.connections)) {
@@ -32,23 +31,23 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails, index 
   };
 
   return (
-    <View key={`peer-item-${index}`} style={styles.peerItem}>
-      <View key={`peer-header-${index}`} style={styles.peerHeader}>
-        <Text key={`device-name-${index}`} style={styles.deviceName}>{peer.deviceName || 'Unknown Device'}</Text>
-        <View key={`status-container-${index}`} style={styles.statusContainer}>
+    <View style={styles.peerItem}>
+      <View style={styles.peerHeader}>
+        <Text style={styles.deviceName}>{peer.deviceName || 'Unknown Device'}</Text>
+        <View style={styles.statusContainer}>
           {peer.isConnectedToDittoCloud && (
-            <View key={`cloud-badge-${index}`} style={styles.cloudBadge}>
-              <Text key={`cloud-badge-text-${index}`} style={styles.cloudBadgeText}>Cloud</Text>
+            <View style={styles.cloudBadge}>
+              <Text style={styles.cloudBadgeText}>Cloud</Text>
             </View>
           )}
         </View>
       </View>
       
-      <Text key={`peer-id-text-${index}`} style={styles.sdkVersion}>Peer ID: {peer.peerKeyString || 'Unknown'}</Text>
-      <Text key={`sdk-version-text-${index}`} style={styles.sdkVersion}>SDK Version: {peer.dittoSdkVersion || 'Unknown'}</Text>
+      <Text style={styles.sdkVersion}>Peer ID: {peer.peerKeyString || 'Unknown'}</Text>
+      <Text style={styles.sdkVersion}>SDK Version: {peer.dittoSdkVersion || 'Unknown'}</Text>
       
       {showConnectionDetails && getConnectionCount() > 0 && (
-        <Text key={`connection-details-${index}`} style={styles.connectionDetails}>{getConnectionTypes()}</Text>
+        <Text style={styles.connectionDetails}>{getConnectionTypes()}</Text>
       )}
     </View>
   );
