@@ -23,11 +23,6 @@ export const DiskUsageScreen: React.FC = () => {
     );
   }
 
-  const handleExportDataDirectory = () => {
-    // TODO: Implement export data directory functionality
-    console.log('Export data directory pressed');
-  };
-
   return (
     <SafeAreaContainer>
       <DiskUsage ditto={ditto}
