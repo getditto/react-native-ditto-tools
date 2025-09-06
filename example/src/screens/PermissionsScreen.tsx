@@ -1,62 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaContainer } from '../components/SafeAreaContainer';
-import { usePermissions } from '../hooks/usePermissions';
 import { colors, typography, spacing } from '../styles';
 
 export const PermissionsScreen: React.FC = () => {
-  const { permissions, loading, error } = usePermissions();
-
-  const renderPermissionItem = (name: string, granted: boolean) => (
-    <View key={name} style={styles.permissionItem}>
-      <Text style={styles.permissionName}>{name}</Text>
-      <View style={[
-        styles.statusIndicator,
-        { backgroundColor: granted ? colors.success : colors.error },
-      ]}>
-        <Text style={styles.statusText}>{granted ? '✓' : '✗'}</Text>
-      </View>
-    </View>
-  );
-
-  if (loading) {
-    return (
-      <SafeAreaContainer>
-        <View style={styles.loadingState}>
-          <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={styles.loadingText}>Checking permissions...</Text>
-        </View>
-      </SafeAreaContainer>
-    );
-  }
-
-  if (error) {
-    return (
-      <SafeAreaContainer>
-        <View style={styles.errorState}>
-          <Text style={styles.errorText}>Error checking permissions</Text>
-          <Text style={styles.errorSubtext}>{error.message}</Text>
-        </View>
-      </SafeAreaContainer>
-    );
-  }
 
   return (
     <SafeAreaContainer>
       <View style={styles.container}>
         <Text style={styles.title}>Permissions Health</Text>
-
-        <View style={styles.permissionsContainer}>
-          {renderPermissionItem('Bluetooth', permissions.bluetooth)}
-          {renderPermissionItem('WiFi', permissions.wifi)}
-          {renderPermissionItem('Storage', permissions.storage)}
-        </View>
-
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>🔒</Text>
           <Text style={styles.infoText}>
-            Ditto requires these permissions to function properly.
-            Green checkmarks indicate granted permissions, red X's indicate missing permissions.
+            Not implemented yet
           </Text>
         </View>
       </View>
