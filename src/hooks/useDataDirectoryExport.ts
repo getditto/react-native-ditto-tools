@@ -49,7 +49,6 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
       const zipFilePath = `${tempDirectory}${tempDirectory.endsWith('/') ? '' : '/'}${zipFileName}`;
       
       console.log('Zipping data directory:', sourceDirectory);
-      console.log('Output zip file:', zipFilePath);
       
       let zipCreated = false;
       
