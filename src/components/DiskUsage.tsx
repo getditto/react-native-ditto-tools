@@ -255,11 +255,10 @@ const styles = StyleSheet.create({
   },
   exportButtonsContainer: {
     flexDirection: 'row',
-    gap: 12,
   },
   buttonWrapper: {
     flex: 1,
-    marginHorizontal: 4,
+    marginHorizontal: 6,
   },
   testButtonText: {
     backgroundColor: '#007AFF',
