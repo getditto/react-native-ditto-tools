@@ -19,11 +19,20 @@ const config = {
   ],
   
   resolver: {
-    // Ensure Metro can resolve modules from both locations
+    // Only use example's node_modules as primary resolution
     nodeModulesPaths: [
       path.resolve(__dirname, 'node_modules'),
-      path.resolve(libraryPath, 'node_modules'),
     ],
+    
+    // Explicitly map only the modules we need from the library
+    extraNodeModules: {
+      'react': path.resolve(__dirname, 'node_modules/react'),
+      'react-native': path.resolve(__dirname, 'node_modules/react-native'),
+      '@dittolive/ditto': path.resolve(libraryPath, 'node_modules/@dittolive/ditto'),
+      'react-native-config': path.resolve(libraryPath, 'node_modules/react-native-config'),
+      'react-native-fs': path.resolve(libraryPath, 'node_modules/react-native-fs'),
+      'react-native-zip-archive': path.resolve(libraryPath, 'node_modules/react-native-zip-archive'),
+    },
     
     // Enable symlinks (default in RN 0.77.1, but explicit for clarity)
     unstable_enableSymlinks: true,

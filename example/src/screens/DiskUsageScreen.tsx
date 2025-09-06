@@ -30,8 +30,8 @@ export const DiskUsageScreen: React.FC = () => {
 
   return (
     <SafeAreaContainer>
-      <DiskUsage
-      />
+      <DiskUsage ditto={ditto}
+       />
     </SafeAreaContainer>
   );
 };

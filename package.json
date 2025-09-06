@@ -48,6 +48,8 @@
     "@types/react-native": "0.73.0",
     "react-native-builder-bob": "^0.20.0",
     "react-native-config": "^1.5.0",
+    "react-native-fs": "^2.20.0",
+    "react-native-zip-archive": "^7.0.2",
     "typescript": "^5.9.2"
   },
   "peerDependencies": {
@@ -74,9 +76,5 @@
         }
       ]
     ]
-  },
-  "dependencies": {
-    "react-native-fs": "^2.20.0",
-    "react-native-zip-archive": "^7.0.2"
   }
 }
