@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
   connectionDetails: {
     fontSize: 12,
     color: '#888',
-    fontFamily: 'Courier',
   },
 });
 

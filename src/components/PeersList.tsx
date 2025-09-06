@@ -92,7 +92,7 @@ const PeersList: React.FC<PeersListProps> = ({
   );
 
   const keyExtractor = (item: PeerInfo) => 
-    item.peerKeyString || item.deviceName || `peer-${Date.now()}-${Math.random()}`;
+    item.peerKeyString || item.deviceName;
 
   if (error) {
     return (
