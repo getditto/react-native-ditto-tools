@@ -65,8 +65,8 @@ const PeersList: React.FC<PeersListProps> = ({
           <View style={styles.connectionsContainer}>
             <Text style={styles.connectionsTitle}>Local Connections:</Text>
             {Array.isArray(localPeer.connections) ? (
-              localPeer.connections.map((connection) => (
-                <React.Fragment key={`connection-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}`}>
+              localPeer.connections.map((connection, idx) => (
+                <React.Fragment key={`connection-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}-${idx}`}>
                   <Text style={styles.connectionItem}>
                     {connection.peerKeyString1} - {connection.connectionType}
                   </Text>
