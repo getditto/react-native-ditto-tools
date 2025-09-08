@@ -30,8 +30,7 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
   style,
 }) => {
   const { diskUsageInfo, isLoading, error } = useDiskUsage(ditto);
-  const logExportResult = useLogExport(ditto);
-  const { exportLogs, isExporting } = logExportResult || { exportLogs: null, isExporting: false };
+  const { exportLogs, isExporting } = useLogExport(ditto);
   const { exportDataDirectory, isExporting: isExportingData, error: dataExportError, cleanupWarning } = useDataDirectoryExport(ditto);
 
   const formatBytes = (bytes: number): string => {
