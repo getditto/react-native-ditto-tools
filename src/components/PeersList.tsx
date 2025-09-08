@@ -92,7 +92,7 @@ const PeersList: React.FC<PeersListProps> = ({
   );
 
   const keyExtractor = (item: PeerInfo) => 
-    item.peerKeyString || item.deviceName;
+    item.peerKeyString || item.deviceName || item.address.pubkey.toString();
 
   if (error) {
     return (
