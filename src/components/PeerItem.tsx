@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -12,23 +12,23 @@ interface PeerItemProps {
 }
 
 const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
-  const getConnectionCount = () => {
+  const connectionCount = useMemo(() => {
     // Use the connections array length if available, otherwise fallback to individual counts
     if (peer.connections && Array.isArray(peer.connections)) {
       return peer.connections.length;
     }
     // Fallback for different peer structure
     return Object.keys(peer.connections || {}).length;
-  };
+  }, [peer.connections]);
 
-  const getConnectionTypes = () => {
+  const connectionTypes = useMemo(() => {
     if (peer.connections && Array.isArray(peer.connections)) {
       return `${peer.connections.length} active connections`;
     }
     // Fallback to show connection count
     const connCount = Object.keys(peer.connections || {}).length;
     return `${connCount} connections`;
-  };
+  }, [peer.connections]);
 
   return (
     <View style={styles.peerItem}>
@@ -46,8 +46,8 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
       <Text style={styles.sdkVersion}>Peer ID: {peer.peerKeyString || 'Unknown'}</Text>
       <Text style={styles.sdkVersion}>SDK Version: {peer.dittoSdkVersion || 'Unknown'}</Text>
       
-      {showConnectionDetails && getConnectionCount() > 0 && (
-        <Text style={styles.connectionDetails}>{getConnectionTypes()}</Text>
+      {showConnectionDetails && connectionCount > 0 && (
+        <Text style={styles.connectionDetails}>{connectionTypes}</Text>
       )}
     </View>
   );
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PeerItem;
+export default React.memo(PeerItem);
