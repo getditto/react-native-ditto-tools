@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Share } from 'react-native';
 import { Ditto, Logger } from '@dittolive/ditto';
-import RNFS from 'react-native-fs';
+import { unlink } from '@dr.pogodin/react-native-fs';
 
 interface UseLogExportResult {
   exportLogs: () => Promise<void>;
@@ -67,7 +67,7 @@ export const useLogExport = (ditto: Ditto): UseLogExportResult => {
         // Always clean up the temp file
         if (tempFileCreated) {
           try {
-            await RNFS.unlink(tempFilePath);
+            await unlink(tempFilePath);
           } catch (cleanupError) {
             // Re-throw cleanup errors to ensure they're not silently swallowed
             throw new Error(`Failed to clean up temp file: ${cleanupError instanceof Error ? cleanupError.message : 'Unknown error'}`);

@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Share } from 'react-native';
 import { Ditto } from '@dittolive/ditto';
 import { zip } from 'react-native-zip-archive';
-import RNFS from 'react-native-fs';
+import { unlink } from '@dr.pogodin/react-native-fs';
 
 interface UseDataDirectoryExportResult {
   exportDataDirectory: () => Promise<void>;
@@ -67,7 +67,7 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
         // Always attempt to clean up the zip file
         if (zipCreated) {
           try {
-            await RNFS.unlink(zipFilePath);
+            await unlink(zipFilePath);
           } catch (cleanupError) {
             // Don't throw cleanup errors - just warn the user
             const warningMessage = `Warning: Could not delete temporary file ${zipFileName}. You may need to manually clean it up to free disk space.`;
