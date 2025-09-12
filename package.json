@@ -2,25 +2,44 @@
   "name": "@dittolive/ditto-react-native-tools",
   "version": "0.1.1",
   "description": "React Native library for Ditto tools integration",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "react-native": "src/index.ts",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "lib/module/index.js",
   "source": "src/index.ts",
   "files": [
     "src",
     "lib",
-    "android",
-    "ios",
-    "react-native-ditto-tools.podspec",
     "!**/__tests__",
     "!**/__fixtures__",
-    "!**/__mocks__"
+    "!**/__mocks__",
+    "!example",
+    "!example/**"
   ],
   "scripts": {
     "typescript": "tsc --noEmit",
     "prepare": "bob build",
     "example": "yarn --cwd example"
+  },
+
+  "devDependencies": {
+    "@dittolive/ditto": "4.11.4",
+    "@types/react": "^18.2.0",
+    "@types/react-native": "^0.73.0",
+    "react-native-builder-bob": "^0.20.0",
+    "@dr.pogodin/react-native-fs": "^2.35.1",
+    "react-native-zip-archive": "^7.0.2",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "@dittolive/ditto": ">=4.11.4",
+    "react": "*",
+    "react-native": "*",
+    "@dr.pogodin/react-native-fs": "^2.35.1",
+    "react-native-zip-archive": "^7.0.2"
+  },
+  "resolutions": {
+    "react-native": "0.77.1"
   },
   "keywords": [
     "react-native",
@@ -41,20 +60,6 @@
   "homepage": "https://github.com/yourusername/react-native-ditto-tools#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
-  },
-  "devDependencies": {
-    "@types/react": "^19.1.0",
-    "@types/react-native": "^0.73.0",
-    "react-native-builder-bob": "^0.20.0",
-    "typescript": "^4.5.2",
-    "@dittolive/ditto": "^4.0.0",
-    "react-native-config": "^1.5.0"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "@dittolive/ditto": ">=4.0.0",
-    "react-native-config": "^1.5.0"
   },
   "react-native-builder-bob": {
     "source": "src",

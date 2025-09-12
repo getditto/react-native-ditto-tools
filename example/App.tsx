@@ -1,35 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { DittoProvider } from '@dittolive/ditto-react-native-tools';
-import { useDittoInitialization } from './hooks/useDittoInitalization';
-import { AppContent } from './components/AppContent';
+import { StatusBar } from 'react-native';
+import DittoProvider from './src/providers/DittoProvider';
+import { AppNavigator } from './src/navigation/AppNavigator';
 
-function App() {
-  const { ditto } = useDittoInitialization();
-
-  if (!ditto) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Initializing Ditto...</Text>
-      </View>
-    );
-  }
-  
+function App(): React.JSX.Element {
   return (
-    <DittoProvider ditto={ditto}>
-      <AppContent />
+    <DittoProvider>
+      <StatusBar barStyle="dark-content" backgroundColor="#F2F2F7" />
+      <AppNavigator />
     </DittoProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  loadingText: {
-    textAlign: 'center',
-    marginTop: 50,
-  },
-});
 
 export default App;

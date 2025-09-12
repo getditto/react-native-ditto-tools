@@ -63,19 +63,26 @@ def enableProguardInReleaseBuilds = false
  * The preferred build flavor of JavaScriptCore (JSC)
  *
  * For example, to use the international variant, you can use:
- * `def jscFlavor = io.github.react-native-community:jsc-android-intl:2026004.+`
+ * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
  *
  * The international variant includes ICU i18n library and necessary data
  * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
+def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
+
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libdittoffi.so'
+        pickFirst 'lib/armeabi-v7a/libdittoffi.so'
+        pickFirst 'lib/x86/libdittoffi.so'
+        pickFirst 'lib/x86_64/libdittoffi.so'
+    }
 
     namespace "com.example"
     defaultConfig {
@@ -84,13 +91,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-    }
-    packagingOptions {
-        pickFirst 'lib/**/libdittoffi.so'
-        pickFirst 'lib/**/libjsi.so'
-        pickFirst 'lib/**/libreact_nativemodule_core.so'
-        pickFirst 'lib/**/libturbomodulejsijni.so'
-        pickFirst 'lib/**/libreactnative.so'
     }
     signingConfigs {
         debug {

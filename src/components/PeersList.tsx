@@ -3,76 +3,33 @@ import {
   View,
   Text,
   StyleSheet,
+  FlatList,
 } from 'react-native';
-import { usePeers, PeerInfo } from '../hooks/usePeers';
+import type { ListRenderItem } from 'react-native';
+import { Ditto } from '@dittolive/ditto';
+import { usePeers } from '../hooks/usePeers';
+import type { PeerInfo } from '../hooks/usePeers';
+import { PeerItem } from './PeerItem';
 
 interface PeersListProps {
   style?: any;
   showConnectionDetails?: boolean;
-  emptyMessage?: string;
+  ditto: Ditto;
   headerComponent?: () => React.ReactElement;
 }
-
-interface PeerItemProps {
-  peer: PeerInfo;
-  showConnectionDetails: boolean;
-}
-
-const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
-  const getConnectionCount = () => {
-    // Use the connections array length if available, otherwise fallback to individual counts
-    if (peer.connections && Array.isArray(peer.connections)) {
-      return peer.connections.length;
-    }
-    // Fallback for different peer structure
-    return Object.keys(peer.connections || {}).length;
-  };
-
-  const getConnectionTypes = () => {
-    if (peer.connections && Array.isArray(peer.connections)) {
-      return `${peer.connections.length} active connections`;
-    }
-    // Fallback to show connection count
-    const connCount = Object.keys(peer.connections || {}).length;
-    return `${connCount} connections`;
-  };
-
-  return (
-    <View style={styles.peerItem}>
-      <View style={styles.peerHeader}>
-        <Text style={styles.deviceName}>{peer.deviceName || 'Unknown Device'}</Text>
-        <View style={styles.statusContainer}>
-          {peer.isConnectedToDittoCloud && (
-            <View style={styles.cloudBadge}>
-              <Text style={styles.cloudBadgeText}>Cloud</Text>
-            </View>
-          )}
-          <Text style={styles.connectionCount}>
-            {getConnectionCount()} connection{getConnectionCount() !== 1 ? 's' : ''}
-          </Text>
-        </View>
-      </View>
-      
-      <Text style={styles.sdkVersion}>Peer ID: {peer.peerKey || 'Unknown'}</Text>
-      
-      {showConnectionDetails && getConnectionCount() > 0 && (
-        <Text style={styles.connectionDetails}>{getConnectionTypes()}</Text>
-      )}
-    </View>
-  );
-};
 
 const PeersList: React.FC<PeersListProps> = ({
   style,
   showConnectionDetails = true,
-  emptyMessage = 'No peers found',
+  ditto,
   headerComponent,
 }) => {
-  const { peers, isLoading, peerCount } = usePeers();
 
-  const renderPeer = (item: PeerInfo, index: number) => (
+  const emptyMessage = 'No peers found';
+  const { peers, localPeer, isLoading, peerCount, error } = usePeers(ditto);
+
+  const renderPeer: ListRenderItem<PeerInfo> = ({ item }) => (
     <PeerItem 
-      key={`${item.deviceName}-${index}`} 
       peer={item} 
       showConnectionDetails={showConnectionDetails} 
     />
@@ -88,13 +45,63 @@ const PeersList: React.FC<PeersListProps> = ({
   );
 
   const renderHeader = () => (
-    <View style={styles.headerContainer}>
-      {headerComponent && headerComponent()}
-      <Text style={styles.headerText}>
-        {isLoading ? 'Loading peers...' : `${peerCount} peer${peerCount !== 1 ? 's' : ''} found`}
-      </Text>
-    </View>
+    <>
+      <Text style={styles.peerHeaderText}>LOCAL PEER</Text>
+      <View style={styles.peerItem}>
+        {headerComponent && headerComponent()}
+        <View style={styles.peerHeader}>
+          <Text style={styles.deviceName}>{localPeer?.deviceName || 'Unknown Device'}</Text>
+          <View style={styles.statusContainer}>
+            {localPeer?.isConnectedToDittoCloud && (
+              <View style={styles.cloudBadge}>
+                <Text style={styles.cloudBadgeText}>Cloud</Text>
+              </View>
+            )}
+          </View>
+        </View>
+        <Text style={styles.sdkVersion}>SDK Version: {localPeer?.dittoSdkVersion || 'Unknown'}</Text>
+        
+        {localPeer?.connections && (
+          <View style={styles.connectionsContainer}>
+            <Text style={styles.connectionsTitle}>Local Connections:</Text>
+            {Array.isArray(localPeer.connections) ? (
+              localPeer.connections.map((connection, idx) => (
+                <React.Fragment key={`connection-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}-${idx}`}>
+                  <Text style={styles.connectionItem}>
+                    {connection.peerKeyString1} - {connection.connectionType}
+                  </Text>
+                  <View style={styles.divider} />
+                </React.Fragment>
+              ))
+            ) : (
+              Object.entries(localPeer.connections).map(([type, count]) => (
+                <Text key={type} style={styles.connectionItem}>
+                  {type}: {String(count)}
+                </Text>
+              ))
+            )}
+          </View>
+        )}
+        
+        <Text style={styles.peerHeader}>
+          {isLoading ? 'Loading peers...' : `${peerCount} peer${peerCount !== 1 ? 's' : ''} found`}
+        </Text>
+      </View>
+      <Text style={styles.peerHeaderText}>REMOTE PEERS</Text>
+    </>
   );
+
+  const keyExtractor = (item: PeerInfo) => 
+    item.peerKeyString || item.deviceName || item.address.pubkey.toString();
+
+  if (error) {
+    return (
+      <View style={[styles.container, styles.errorContainer, style]}>
+        <Text style={styles.errorText}>⚠️ Error loading peers</Text>
+        <Text style={styles.errorSubtext}>{error}</Text>
+      </View>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -107,15 +114,18 @@ const PeersList: React.FC<PeersListProps> = ({
 
   return (
     <View style={[styles.container, style]}>
-      {renderHeader()}
-      <View style={styles.peersContainer}>
-        {peers.length === 0 ? renderEmpty() : peers.slice(0, 10).map(renderPeer)}
-        {peers.length > 10 && (
-          <Text style={styles.moreText}>
-            ... and {peers.length - 10} more peers
-          </Text>
-        )}
-      </View>
+      <FlatList
+        data={peers}
+        renderItem={renderPeer}
+        keyExtractor={keyExtractor}
+        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={renderEmpty}
+        contentContainerStyle={peers.length === 0 ? styles.emptyListContainer : styles.listContent}
+        showsVerticalScrollIndicator={true}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={21}
+      />
     </View>
   );
 };
@@ -123,10 +133,9 @@ const PeersList: React.FC<PeersListProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#f2f2f7', // iOS system background color
   },
-  peersContainer: {
-    flex: 1,
+  listContent: {
     paddingBottom: 20,
   },
   loadingContainer: {
@@ -140,17 +149,6 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 16,
     color: '#666',
-  },
-  headerContainer: {
-    padding: 16,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
   },
   peerItem: {
     backgroundColor: '#ffffff',
@@ -166,6 +164,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  peerHeaderText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    flex: 1,
+    marginTop: 16,
+    marginBottom: 8,
+    marginHorizontal: 16,
   },
   peerHeader: {
     flexDirection: 'row',
@@ -194,19 +201,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  connectionCount: {
-    fontSize: 14,
-    color: '#666',
+  divider: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 4,
+    marginLeft: 8,
   },
   sdkVersion: {
     fontSize: 14,
     color: '#666',
     marginBottom: 4,
-  },
-  connectionDetails: {
-    fontSize: 12,
-    color: '#888',
-    fontFamily: 'Courier',
   },
   emptyContainer: {
     padding: 32,
@@ -225,17 +229,43 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
   },
-  moreText: {
-    textAlign: 'center',
-    padding: 16,
-    fontSize: 14,
-    color: '#666',
-    fontStyle: 'italic',
-  },
   emptyListContainer: {
     flexGrow: 1,
     justifyContent: 'center',
   },
+  errorContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+  },
+  errorText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#ff3b30',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  errorSubtext: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  connectionsContainer: {
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  connectionsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 4,
+  },
+  connectionItem: {
+    fontSize: 12,
+    color: '#888',
+    marginLeft: 8,
+  },
 });
 
-export default PeersList;
+export { PeersList };

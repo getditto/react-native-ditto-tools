@@ -1,2 +1,3 @@
-export { default as DittoProvider, DittoContext, type DittoContextValue, type DittoProviderProps } from './DittoProvider';
-export { default as PeersList } from './PeersList';
+export { PeersList } from './PeersList';
+export { PeerItem } from './PeerItem';
+export { DiskUsage } from './DiskUsage';

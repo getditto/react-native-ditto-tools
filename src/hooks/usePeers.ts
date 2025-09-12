@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useDittoContext } from './useDittoContext';
-import type { Peer } from '@dittolive/ditto';
+import type { Ditto, Peer, Observer } from '@dittolive/ditto';
 
 // Re-export Ditto's Peer type for convenience
 export type PeerInfo = Peer;
 
-export const usePeers = () => {
-  const { ditto } = useDittoContext();
+export const usePeers = (ditto: Ditto) => {
   const [peers, setPeers] = useState<PeerInfo[]>([]);
+  const [localPeer, setLocalPeer] = useState<PeerInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('usePeers: Setting up peer observation');
-    let observer: any;
+    let observer: Observer | null = null;
 
     const setupPeerObserver = async () => {
       try {
@@ -20,20 +19,15 @@ export const usePeers = () => {
         
         // Observe peers
         observer = ditto.presence.observe((presenceGraph) => {
-          console.log('usePeers: Received presence graph update');
-          console.log('usePeers: Full presence graph:', presenceGraph);
-          console.log('usePeers: Local peer:', presenceGraph.localPeer);
+          setLocalPeer(presenceGraph.localPeer);
           const remotePeers = presenceGraph.remotePeers || [];
-          console.log('usePeers: Remote peers count:', remotePeers.length);
-          console.log('usePeers: Remote peers details:', remotePeers);
           setPeers(remotePeers);
           setIsLoading(false);
+          setError(null); // Clear any previous errors
         });
-
-        console.log('usePeers: Peer observer set up successfully');
       } catch (error) {
-        console.error('usePeers: Error setting up peer observer:', error);
         setIsLoading(false);
+        setError(error instanceof Error ? error.message : 'Failed to observe peers');
       }
     };
 
@@ -41,7 +35,6 @@ export const usePeers = () => {
 
     // Cleanup function
     return () => {
-      console.log('usePeers: Cleaning up peer observer');
       if (observer) {
         observer.stop();
       }
@@ -50,7 +43,9 @@ export const usePeers = () => {
 
   return {
     peers,
+    localPeer,
     isLoading,
     peerCount: peers.length,
+    error,
   };
 };
