@@ -84,4 +84,4 @@ else
 fi
 
 echo "✅ Cache clearing complete!"
-echo "💡 You can now run 'npx expo start --clear' or 'npx expo run:ios' to start with a clean slate"
+echo "💡 You can now run 'npx react-native run-ios' or 'npx react-native run-android' to start with a clean slate"
