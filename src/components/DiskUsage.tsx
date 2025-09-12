@@ -24,7 +24,7 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
 }) => {
   const { diskUsageInfo, isLoading, error } = useDiskUsage(ditto);
   const { exportLogs, isExporting } = useLogExport(ditto);
-  const { exportDataDirectory, isExporting: isExportingData, error: dataExportError, cleanupWarning } = useDataDirectoryExport(ditto);
+  const { exportDataDirectory, isExporting: isExportingData, error: dataExportError } = useDataDirectoryExport(ditto);
 
   const formatDate = (dateString: string): string => {
     try {
@@ -86,12 +86,6 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
           </View>
         )}
         
-        {/* Cleanup Warning */}
-        {cleanupWarning && (
-          <View style={styles.warningMessageContainer}>
-            <Text style={styles.warningMessageText}>⚠️ {cleanupWarning}</Text>
-          </View>
-        )}
       </View>
 
       {/* Device Name Header */}

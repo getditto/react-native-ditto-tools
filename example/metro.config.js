@@ -30,7 +30,7 @@ const config = {
         'react',
         'react-native',
         '@dittolive/ditto',
-        'react-native-fs',
+        '@dr.pogodin/react-native-fs',
         'react-native-zip-archive',
       ];
       const result = {};

@@ -8,13 +8,11 @@ interface UseDataDirectoryExportResult {
   exportDataDirectory: () => Promise<void>;
   isExporting: boolean;
   error: string | null;
-  cleanupWarning: string | null;
 }
 
 export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResult => {
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [cleanupWarning, setCleanupWarning] = useState<string | null>(null);
 
   /**
    * Use the system's temporary directory for creating zip files
@@ -28,7 +26,6 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
     try {
       setIsExporting(true);
       setError(null);
-      setCleanupWarning(null);
       // Generate filename with timestamp
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const zipFileName = `ditto-data-${timestamp}.zip`;
@@ -76,9 +73,8 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
           try {
             await unlink(zipFilePath);
           } catch (cleanupError) {
-            // Don't throw cleanup errors - just warn the user
-            const warningMessage = `Warning: Could not delete temporary file ${zipFileName}. You may need to manually clean it up to free disk space.`;
-            setCleanupWarning(warningMessage);
+            // Throw cleanup errors so developers know about manual cleanup needed
+            throw new Error(`Failed to delete temporary zip file at ${zipFilePath}. You may need to manually delete this file to free disk space. Original cleanup error: ${cleanupError instanceof Error ? cleanupError.message : 'Unknown error'}`);
           }
         }
       }
@@ -96,6 +92,5 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
     exportDataDirectory,
     isExporting,
     error,
-    cleanupWarning,
   };
 };
