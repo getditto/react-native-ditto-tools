@@ -1,9 +1,10 @@
-import React, { useCallback, useState, useMemo } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, TextInput, Pressable } from 'react-native';
 import type { Ditto } from '@dittolive/ditto';
 import type { ViewStyle } from 'react-native';
 import type { SystemSetting } from '../types/systemSettings';
 import { useSystemSettings } from '../hooks/useSystemSettings';
+import { useSettingsSearch } from '../hooks/useSettingsSearch';
 
 interface SystemSettingsProps {
   ditto: Ditto;
@@ -15,7 +16,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
   style
 }) => {
   const { settings, loading, error, refresh, lastUpdatedAt } = useSystemSettings(ditto);
-  const [searchTerm, setSearchTerm] = useState('');
+  const { filteredSettings, searchTerm, setSearchTerm } = useSettingsSearch(settings);
 
   const handleRefresh = useCallback(() => {
     refresh();
@@ -23,20 +24,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
 
   const handleSearchChange = useCallback((text: string) => {
     setSearchTerm(text);
-  }, []);
-
-  // Filter settings based on search term
-  const filteredSettings = useMemo(() => {
-    if (!searchTerm.trim()) {
-      return settings;
-    }
-    
-    const searchLower = searchTerm.toLowerCase();
-    return settings.filter(setting => 
-      setting.key.toLowerCase().includes(searchLower) ||
-      String(setting.value).toLowerCase().includes(searchLower)
-    );
-  }, [settings, searchTerm]);
+  }, [setSearchTerm]);
 
 
   const renderSettingItem = ({ item }: { item: SystemSetting }) => (
@@ -56,10 +44,16 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
       <View style={[styles.container, style]}>
         <View style={styles.centerContainer}>
           <Text style={styles.loadingText}>⏳ Loading settings...</Text>
-          <View style={styles.refreshButton} onTouchEnd={handleRefresh}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.refreshButton,
+              pressed && styles.refreshButtonPressed
+            ]}
+            onPress={handleRefresh}
+          >
             <Text style={styles.refreshIcon}>🔄</Text>
             <Text style={styles.refreshButtonText}>Force Refresh</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     );
@@ -70,10 +64,16 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
       <View style={[styles.container, style]}>
         <View style={styles.centerContainer}>
           <Text style={styles.errorText}>Failed to load system settings</Text>
-          <View style={styles.refreshButton} onTouchEnd={handleRefresh}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.refreshButton,
+              pressed && styles.refreshButtonPressed
+            ]}
+            onPress={handleRefresh}
+          >
             <Text style={styles.refreshIcon}>🔄</Text>
             <Text style={styles.refreshButtonText}>Retry</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     );
@@ -94,15 +94,19 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
           value={searchTerm}
           onChangeText={handleSearchChange}
         />
-        <View
-          style={styles.refreshButton}
-          onTouchEnd={loading ? undefined : handleRefresh}
+        <Pressable
+          style={({ pressed }) => [
+            styles.refreshButton,
+            pressed && styles.refreshButtonPressed
+          ]}
+          onPress={loading ? undefined : handleRefresh}
+          disabled={loading}
         >
           <Text style={styles.refreshIcon}>🔄</Text>
           <Text style={[styles.refreshButtonText, { color: loading ? '#999999' : '#007AFF' }]}>
             Refresh
           </Text>
-        </View>
+        </Pressable>
       </View>
       
       <View style={styles.headerContainer}>
@@ -159,7 +163,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: 36,
+    height: 44,
     borderWidth: 1,
     borderColor: '#D0D0D0',
     borderRadius: 8,
@@ -194,6 +198,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#007AFF',
     fontWeight: '500',
+  },
+  refreshButtonPressed: {
+    opacity: 0.7,
   },
   settingItem: {
     paddingHorizontal: 16,

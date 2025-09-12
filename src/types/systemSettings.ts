@@ -51,3 +51,30 @@ export interface UseSettingsSearchResult {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
 }
+
+// DQL query result types for SHOW ALL
+export interface DQLQueryResult {
+  items?: DQLResultItem[];
+}
+
+export interface DQLResultItem {
+  // Case 1: Item with nested value object
+  value?: Record<string, unknown>;
+  // Case 2: Item with explicit key and value
+  key?: unknown;
+  // Case 3: Item as direct key-value pairs
+  [key: string]: unknown;
+}
+
+// Type guard functions
+export const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
+
+export const hasKeyValue = (item: DQLResultItem): item is DQLResultItem & { key: unknown; value: unknown } => {
+  return item.key !== undefined && item.value !== undefined;
+};
+
+export const hasNestedValue = (item: DQLResultItem): item is DQLResultItem & { value: Record<string, unknown> } => {
+  return item.value !== undefined && isRecord(item.value);
+};

@@ -1,6 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { Ditto } from '@dittolive/ditto';
-import type { SystemSetting, UseSystemSettingsResult } from '../types/systemSettings';
+import type { 
+  SystemSetting, 
+  UseSystemSettingsResult, 
+  DQLQueryResult, 
+  DQLResultItem
+} from '../types/systemSettings';
+import { 
+  hasKeyValue,
+  hasNestedValue
+} from '../types/systemSettings';
 
 export const useSystemSettings = (ditto: Ditto): UseSystemSettingsResult => {
   const [settings, setSettings] = useState<SystemSetting[]>([]);
@@ -8,7 +17,7 @@ export const useSystemSettings = (ditto: Ditto): UseSystemSettingsResult => {
   const [error, setError] = useState<Error | null>(null);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<Date | null>(null);
 
-  const formatValue = (value: any): string | number | boolean => {
+  const formatValue = (value: unknown): string | number | boolean => {
     // Handle null/undefined
     if (value === null || value === undefined) {
       return 'null';
@@ -44,22 +53,22 @@ export const useSystemSettings = (ditto: Ditto): UseSystemSettingsResult => {
       setError(null);
       
       // Execute SHOW ALL DQL query
-      const results = await ditto.store.execute('SHOW ALL');
+      const results = await ditto.store.execute('SHOW ALL') as unknown as DQLQueryResult;
       
       if (results.items && results.items.length > 0) {
         // Parse the results into SystemSetting format
-        const parsedSettings: SystemSetting[] = results.items.map((item: any) => {
+        const parsedSettings: SystemSetting[] = results.items.map((item: DQLResultItem) => {
           // The SHOW ALL query returns items with key-value pairs
           // The structure might be { setting_name: value } or { key: name, value: val }
           // We need to handle both cases
           
-          if (item.value && typeof item.value === 'object') {
+          if (hasNestedValue(item)) {
             // If the item has a value property that's an object, extract all settings from it
             return Object.entries(item.value).map(([key, val]) => ({
               key,
               value: formatValue(val)
             }));
-          } else if (item.key !== undefined && item.value !== undefined) {
+          } else if (hasKeyValue(item)) {
             // If item has explicit key and value properties
             return {
               key: String(item.key),
