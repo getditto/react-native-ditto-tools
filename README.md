@@ -55,7 +55,7 @@ After installing this library, you need to configure your React Native app for D
 
 ```typescript
 import React from 'react';
-import { DittoProvider, PeersList, DiskUsage } from '@dittolive/ditto-react-native-tools';
+import { DittoProvider, PeersList, DiskUsage, SystemSettings } from '@dittolive/ditto-react-native-tools';
 import { Ditto } from '@dittolive/ditto';
 
 // Initialize your Ditto instance
@@ -72,6 +72,8 @@ function App() {
         showConnectionDetails={true}
         emptyMessage="No peers discovered yet"
       />
+      {/* Or use other components */}
+      <SystemSettings ditto={ditto} />
     </DittoProvider>
   );
 }
@@ -96,8 +98,27 @@ import { PeersList } from '@dittolive/ditto-react-native-tools';
 **Props:**
 - `ditto` (required): Your Ditto instance
 - `showConnectionDetails?: boolean` - Whether to show detailed connection information (default: true)
-- `style?: ViewStyle` - Custom styling for the component
+- `style?: ViewStyle` - Custom styling for the main container
 - `headerComponent?: () => React.ReactElement` - Optional header component
+
+**Style Customization:**
+The component's styling is controlled through built-in StyleSheet with the following key areas that can be customized via the `style` prop:
+- **Main container**: Background color, flex properties, padding
+- **List content**: Bottom padding and scroll behavior
+- **Peer items**: Card-style containers with shadows and rounded corners
+- **Loading/Error states**: Centered content with appropriate typography
+
+```typescript
+// Example custom styling
+<PeersList 
+  ditto={ditto}
+  style={{ 
+    flex: 1, 
+    backgroundColor: '#1a1a1a',  // Dark theme background
+    paddingHorizontal: 8         // Reduce horizontal margins
+  }}
+/>
+```
 
 ### DiskUsage
 
@@ -115,13 +136,90 @@ import { DiskUsage } from '@dittolive/ditto-react-native-tools';
 
 **Props:**
 - `ditto` (required): Your Ditto instance
-- `style?: ViewStyle` - Custom styling for the component
+- `style?: ViewStyle` - Custom styling for the main container
 - `onExportDataDirectory?: () => void` - Callback when export data directory button is pressed
 
 **Features:**
 - **Automatic Log Export**: The "Export Logs" button uses Ditto's built-in `Logger.exportToFile()` method to save log files
 - **Disk Usage Display**: Shows real-time disk usage breakdown for different Ditto components (store, replication, attachments, auth)
 - **Last Updated Time**: Footer displays when the data was last refreshed
+
+**Style Customization:**
+The component's styling is controlled through built-in StyleSheet with the following key areas that can be customized via the `style` prop:
+- **Main container**: Background color, flex properties, padding
+- **Content layout**: Card-style containers with proper spacing
+- **Usage displays**: Progress bars, labels, and value formatting
+- **Action buttons**: Export button styling and disabled states
+- **Footer information**: Last updated timestamp styling
+
+```typescript
+// Example custom styling
+<DiskUsage 
+  ditto={ditto}
+  style={{ 
+    flex: 1, 
+    backgroundColor: '#f8f9fa',  // Light gray background
+    padding: 16                   // Add container padding
+  }}
+/>
+```
+
+### SystemSettings
+
+Display all Ditto system settings using the `SHOW ALL` DQL statement. Self-contained component with built-in refresh functionality.
+
+```typescript
+import { SystemSettings } from '@dittolive/ditto-react-native-tools';
+
+<SystemSettings 
+  ditto={ditto}
+  style={{ flex: 1, backgroundColor: '#f5f5f5' }}
+/>
+```
+
+**Props:**
+- `ditto` (required): Your Ditto instance
+- `style?: ViewStyle` - Custom styling for the main container
+
+**Features:**
+- **Self-contained**: No callbacks required - handles all interactions internally
+- **System Settings Display**: Shows all Ditto system settings from SHOW ALL DQL query
+- **Real-time Search**: Built-in search functionality with instant filtering
+- **Search Capabilities**: Case-insensitive search across both setting keys and values
+- **Smart Count Display**: Shows filtered results count (e.g., "5 of 141 settings")
+- **Refresh Functionality**: Built-in refresh button to reload settings
+- **Performance Optimized**: Uses FlatList virtualization and in-memory filtering for 200+ settings
+- **Loading States**: Automatic loading, error, and empty state handling
+- **Visual Design**: Clean search interface with bordered input and proper typography
+
+**Style Customization:**
+The component's styling is controlled through built-in StyleSheet with the following key areas that can be customized via the `style` prop:
+- **Main container**: Background color, flex properties, padding
+- **Header section**: Settings count and refresh button layout
+- **Settings list**: Individual setting items with key-value pairs
+- **Loading/Error states**: Centered content with appropriate messaging
+- **Footer information**: Last updated timestamp styling
+
+**Search Functionality:**
+The component includes a built-in search feature that:
+- Filters settings in real-time as you type
+- Searches both setting keys and values
+- Shows "X of Y settings" when actively searching
+- Displays "No settings match 'searchterm'" for no results
+- Includes a clear button (iOS) to reset the search
+- Maintains search state while refreshing data
+
+```typescript
+// Example custom styling
+<SystemSettings 
+  ditto={ditto}
+  style={{ 
+    flex: 1, 
+    backgroundColor: '#1a1a1a',  // Dark theme background
+    paddingTop: 20               // Add top spacing
+  }}
+/>
+```
 
 ## Example App
 
