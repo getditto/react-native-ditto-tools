@@ -30,7 +30,6 @@ const config = {
         'react',
         'react-native',
         '@dittolive/ditto',
-        'react-native-config',
         'react-native-fs',
         'react-native-zip-archive',
       ];

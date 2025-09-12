@@ -1,27 +1,32 @@
 # @dittolive/ditto-react-native-tools
 
-React Native library for Ditto tools integration
+Diagonistic and Debugging Tools for Ditto in React Native 
 
-## Installation
-
-```sh
-npm install @dittolive/ditto-react-native-tools @dittolive/ditto react-native-config react-native-fs react-native-zip-archive
-```
-
-or
-
-```sh
-yarn add @dittolive/ditto-react-native-tools @dittolive/ditto react-native-config react-native-fs react-native-zip-archive
-```
+> **⚠️ Platform Compatibility Notice**  
+> These tools currently do not support the **React Native MacOS platform**. They are designed for mobile (iOS, Android) platforms where Ditto's peer-to-peer functionality and file system access are available.
 
 ### Required Dependencies
 
 This library requires the following peer dependencies to be installed in your app:
 
 - `@dittolive/ditto` - Core Ditto SDK
-- `react-native-config` - Environment variable support  
-- `react-native-fs` - File system operations for log export and data directory cleanup
+- `@dr.pogodin/react-native-fs` - File system operations for log export and data directory cleanup
 - `react-native-zip-archive` - Directory compression for data export functionality
+
+> **⚠️ iOS Target Version**  
+> Some tools require iOS version 15.5 or higher. You may need to update your iOS target version. 
+
+## Installation
+
+```sh
+npm install @dittolive/ditto-react-native-tools @dittolive/ditto @dr.pogodin/react-native-fs react-native-zip-archive
+```
+
+or
+
+```sh
+yarn add @dittolive/ditto-react-native-tools @dittolive/ditto @dr.pogodin/react-native-fs react-native-zip-archive
+```
 
 ### iOS Setup
 
@@ -114,7 +119,7 @@ import { DiskUsage } from '@dittolive/ditto-react-native-tools';
 - `onExportDataDirectory?: () => void` - Callback when export data directory button is pressed
 
 **Features:**
-- **Automatic Log Export**: The "Export Logs" button prompts users to select a directory, then uses Ditto's built-in `Logger.exportToFile()` method to save log files directly to the chosen location
+- **Automatic Log Export**: The "Export Logs" button uses Ditto's built-in `Logger.exportToFile()` method to save log files
 - **Disk Usage Display**: Shows real-time disk usage breakdown for different Ditto components (store, replication, attachments, auth)
 - **Last Updated Time**: Footer displays when the data was last refreshed
 
@@ -126,20 +131,49 @@ This repository includes a fully functional example app demonstrating all featur
 
 ### Testing Changes During Development
 
-When making changes to the root library code and testing them in the example app, you can now use live symlinks for instant updates:
+When making changes to the root library code and testing them in the example app, the project is setup with symlinks for testing.   
 
-#### Initial Setup (One-time)
+package.json:
+```json
+    "@dittolive/ditto-react-native-tools": "file:.."
+```
 
-1. **Create a yarn link** in the library root:
-   ```bash
-   yarn link
-   ```
+To stop packages from bleeding from the library to the example app, the example app's metro.config.js is setup to only use the modules we need from the library:
 
-2. **Link the library** in the example app:
-   ```bash
-   cd example
-   yarn link "@dittolive/ditto-react-native-tools"
-   ```
+```js
+    // Explicitly map only the modules we need from the library
+    extraNodeModules: (() => {
+      const modules = [
+        'react',
+        'react-native',
+        '@dittolive/ditto',
+        '@dr.pogodin/react-native-fs',
+        'react-native-zip-archive',
+      ];
+      const result = {};
+      for (const mod of modules) {
+        try {
+          // Try to resolve the module from the example app first, then from the library
+          let resolvedPath;
+          try {
+            resolvedPath = path.dirname(require.resolve(`${mod}/package.json`, { paths: [path.resolve(__dirname, 'node_modules')] }));
+          } catch (e) {
+            resolvedPath = path.dirname(require.resolve(`${mod}/package.json`, { paths: [path.resolve(libraryPath, 'node_modules')] }));
+          }
+          if (fs.existsSync(resolvedPath)) {
+            result[mod] = resolvedPath;
+          }
+        } catch (e) {
+          // Module not found, skip
+        }
+      }
+      return result;
+    })(),
+    
+    // Enable symlinks (default in RN 0.77.1, but explicit for clarity)
+    unstable_enableSymlinks: true,
+```
+
 
 #### Development Workflow
 
@@ -147,13 +181,19 @@ After the initial setup, changes to the library source code will be immediately 
 
 1. **Make changes** to the library source code in `src/`
 
-2. **Start Metro** (if not already running):
+2. **Clean all caches and reset development environment**:
    ```bash
    cd example
+   ./clear-cache.sh
+   npx expo prebuild --clean
+   ```
+
+3. **Start Metro** (if not already running):
+   ```bash
    npx react-native start --reset-cache
    ```
 
-3. **Run the app**:
+4. **Run the app**:
    ```bash
    # In a new terminal:
    yarn ios --simulator="iPhone 16 Pro"
@@ -227,12 +267,6 @@ This command will automatically build and deploy to the connected device.
 
 #### Troubleshooting
 
-- **Duplicate native libraries error**: If you encounter "2 files found with path 'lib/arm64-v8a/libdittoffi.so'", clean the gradle cache:
-  ```bash
-  rm -rf ~/.gradle/caches/*/transforms/*
-  cd example/android && ./gradlew clean
-  ```
-
 - **App not launching**: Make sure the Metro bundler is running before launching the app
 - **Device not found**: Ensure USB debugging is enabled and the device is properly connected
 
@@ -268,10 +302,9 @@ This library utilizes the following open-source projects:
 
 ### Core Dependencies
 - **[Ditto](https://github.com/getditto/ditto)** - Edge sync platform for building real-time collaborative apps
-- **[React Native Config](https://github.com/luggit/react-native-config)** - Environment variables for React Native apps
 
 ### Export Functionality  
-- **[react-native-fs](https://github.com/itinance/react-native-fs)** - File system access for React Native apps
+- **[@dr.pogodin/react-native-fs](https://github.com/dr-pogodin-react-native/react-native-fs)** - File system access for React Native apps
 - **[react-native-zip-archive](https://github.com/mockingbot/react-native-zip-archive)** - ZIP archive creation and extraction for React Native
 
 We greatly appreciate the maintainers and contributors of these projects for making this library possible.

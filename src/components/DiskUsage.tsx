@@ -7,18 +7,11 @@ import {
   Pressable,
 } from 'react-native';
 import type { ListRenderItem, ViewStyle } from 'react-native';
-import { Ditto } from '@dittolive/ditto';
+import type { Ditto } from '@dittolive/ditto';
 import { useDiskUsage } from '../hooks/useDiskUsage';
-import type { DiskUsageData } from '../hooks/useDiskUsage';
+import type { DiskUsageEntry } from '../hooks/useDiskUsage';
 import { useLogExport } from '../hooks/useLogExport';
 import { useDataDirectoryExport } from '../hooks/useDataDirectoryExport';
-
-interface DiskUsageItem {
-  key: string;
-  name: string;
-  size: number;
-  formattedSize: string;
-}
 
 interface DiskUsageProps {
   ditto: Ditto;
@@ -33,14 +26,6 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
   const { exportLogs, isExporting } = useLogExport(ditto);
   const { exportDataDirectory, isExporting: isExportingData, error: dataExportError, cleanupWarning } = useDataDirectoryExport(ditto);
 
-  const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  };
-
   const formatDate = (dateString: string): string => {
     try {
       const date = new Date(dateString);
@@ -50,42 +35,10 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
     }
   };
 
-  const getDiskUsageItems = (diskUsage: DiskUsageData): DiskUsageItem[] => {
-    const items: DiskUsageItem[] = [
-      {
-        key: 'ditto_store',
-        name: 'ditto_store',
-        size: diskUsage.ditto_store,
-        formattedSize: formatBytes(diskUsage.ditto_store),
-      },
-      {
-        key: 'ditto_replication',
-        name: 'ditto_replication',
-        size: diskUsage.ditto_replication,
-        formattedSize: formatBytes(diskUsage.ditto_replication),
-      },
-      {
-        key: 'ditto_attachments',
-        name: 'ditto_attachments',
-        size: diskUsage.ditto_attachments,
-        formattedSize: formatBytes(diskUsage.ditto_attachments),
-      },
-      {
-        key: 'ditto_auth',
-        name: 'ditto_auth',
-        size: diskUsage.ditto_auth,
-        formattedSize: formatBytes(diskUsage.ditto_auth),
-      },
-    ];
-
-    // Sort by size descending
-    return items.sort((a, b) => b.size - a.size);
-  };
-
-  const renderDiskUsageItem: ListRenderItem<DiskUsageItem> = ({ item }) => (
+  const renderDiskUsageItem: ListRenderItem<DiskUsageEntry> = ({ item }) => (
     <View style={styles.diskUsageItem}>
       <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemSize}>{item.formattedSize}</Text>
+      <Text style={styles.itemSize}>{item.formattedValue}</Text>
     </View>
   );
 
@@ -140,6 +93,14 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
           </View>
         )}
       </View>
+
+      {/* Device Name Header */}
+      {diskUsageInfo?.deviceName && (
+        <View style={styles.deviceNameContainer}>
+          <Text style={styles.deviceNameLabel}>Device:</Text>
+          <Text style={styles.deviceNameText}>{diskUsageInfo.deviceName}</Text>
+        </View>
+      )}
     </View>
   );
 
@@ -182,7 +143,7 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
     );
   }
 
-  const diskUsageItems = diskUsageInfo?.diskUsage ? getDiskUsageItems(diskUsageInfo.diskUsage) : [];
+  const diskUsageItems = diskUsageInfo?.diskUsageEntries || [];
 
   return (
     <View style={[styles.container, style]}>
@@ -302,6 +263,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  deviceNameContainer: {
+    marginTop: 16,
+    paddingHorizontal: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  deviceNameLabel: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '600',
+    marginRight: 8,
+  },
+  deviceNameText: {
+    fontSize: 14,
+    color: '#333',
+    flex: 1,
+  },
   diskUsageItem: {
     backgroundColor: '#ffffff',
     marginHorizontal: 16,
@@ -325,6 +303,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     flex: 1,
+    textTransform: 'capitalize',
   },
   itemSize: {
     fontSize: 16,
@@ -371,4 +350,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DiskUsage;
+export { DiskUsage };

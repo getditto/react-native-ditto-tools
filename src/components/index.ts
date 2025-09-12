@@ -1,3 +1,3 @@
-export { default as PeersList } from './PeersList';
-export { default as PeerItem } from './PeerItem';
-export { default as DiskUsage } from './DiskUsage';
+export { PeersList } from './PeersList';
+export { PeerItem } from './PeerItem';
+export { DiskUsage } from './DiskUsage';

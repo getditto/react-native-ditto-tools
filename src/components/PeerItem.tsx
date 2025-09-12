@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -12,23 +12,6 @@ interface PeerItemProps {
 }
 
 const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
-  const connectionCount = useMemo(() => {
-    // Use the connections array length if available, otherwise fallback to individual counts
-    if (peer.connections && Array.isArray(peer.connections)) {
-      return peer.connections.length;
-    }
-    // Fallback for different peer structure
-    return Object.keys(peer.connections || {}).length;
-  }, [peer.connections]);
-
-  const connectionTypes = useMemo(() => {
-    if (peer.connections && Array.isArray(peer.connections)) {
-      return `${peer.connections.length} active connections`;
-    }
-    // Fallback to show connection count
-    const connCount = Object.keys(peer.connections || {}).length;
-    return `${connCount} connections`;
-  }, [peer.connections]);
 
   return (
     <View style={styles.peerItem}>
@@ -46,8 +29,29 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
       <Text style={styles.sdkVersion}>Peer ID: {peer.peerKeyString || 'Unknown'}</Text>
       <Text style={styles.sdkVersion}>SDK Version: {peer.dittoSdkVersion || 'Unknown'}</Text>
       
-      {showConnectionDetails && connectionCount > 0 && (
-        <Text style={styles.connectionDetails}>{connectionTypes}</Text>
+      {showConnectionDetails && peer.connections && (
+        <View style={styles.connectionsContainer}>
+          <Text style={styles.connectionsTitle}>Connections:</Text>
+          {Array.isArray(peer.connections) ? (
+            peer.connections.map((connection, index) => (
+              <React.Fragment key={`connection-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}-${index}`}>
+                <Text style={styles.connectionItem}>
+                  {connection.peerKeyString1} - {connection.connectionType}
+                </Text>
+                {index < peer.connections.length - 1 && <View style={styles.divider} />}
+              </React.Fragment>
+            ))
+          ) : (
+            Object.entries(peer.connections).map(([type, count], index, entries) => (
+              <React.Fragment key={type}>
+                <Text style={styles.connectionItem}>
+                  {type}: {String(count)}
+                </Text>
+                {index < entries.length - 1 && <View style={styles.divider} />}
+              </React.Fragment>
+            ))
+          )}
+        </View>
       )}
     </View>
   );
@@ -101,10 +105,28 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 4,
   },
-  connectionDetails: {
+  connectionsContainer: {
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  connectionsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 4,
+  },
+  connectionItem: {
     fontSize: 12,
     color: '#888',
+    marginLeft: 8,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 4,
+    marginLeft: 8,
   },
 });
 
-export default React.memo(PeerItem);
+const MemoizedPeerItem = React.memo(PeerItem);
+export { MemoizedPeerItem as PeerItem };

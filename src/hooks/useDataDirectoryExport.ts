@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Share } from 'react-native';
 import { Ditto } from '@dittolive/ditto';
 import { zip } from 'react-native-zip-archive';
-import { unlink } from '@dr.pogodin/react-native-fs';
+import { unlink, exists, mkdir, TemporaryDirectoryPath, DocumentDirectoryPath } from '@dr.pogodin/react-native-fs';
 
 interface UseDataDirectoryExportResult {
   exportDataDirectory: () => Promise<void>;
@@ -17,22 +17,12 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
   const [cleanupWarning, setCleanupWarning] = useState<string | null>(null);
 
   /**
-   * Extract the parent directory from Ditto's persistence directory path
-   * to create a temp directory for the zip file
+   * Use the system's temporary directory for creating zip files
+   * This ensures we have a writable location that exists
    */
   const getTempDirectory = useCallback((): string => {
-    const persistenceDir = ditto.persistenceDirectory;
-    
-    // Handle both forward slash and backslash paths
-    const pathSeparator = persistenceDir.includes('\\') ? '\\' : '/';
-    const pathParts = persistenceDir.split(pathSeparator);
-    
-    // Remove the last directory to get to the parent app directory
-    pathParts.pop();
-    const parentDirectory = pathParts.join(pathSeparator);
-    
-    return parentDirectory;
-  }, [ditto]);
+    return TemporaryDirectoryPath;
+  }, []);
 
   const exportDataDirectory = useCallback(async (): Promise<void> => {
     try {
@@ -43,10 +33,27 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const zipFileName = `ditto-data-${timestamp}.zip`;
       
-      // Get paths
-      const sourceDirectory = ditto.persistenceDirectory;
+      // Get paths - resolve relative Ditto path to absolute path
+      const relativePersistenceDir = ditto.persistenceDirectory;
+      const sourceDirectory = relativePersistenceDir.startsWith('/') 
+        ? relativePersistenceDir 
+        : `${DocumentDirectoryPath}/${relativePersistenceDir}`;
       const tempDirectory = getTempDirectory();
       const zipFilePath = `${tempDirectory}${tempDirectory.endsWith('/') ? '' : '/'}${zipFileName}`;
+      
+      // Note: Skip source directory validation since disk usage data proves Ditto DB exists
+      // The react-native-zip-archive library will handle source path validation internally
+      
+      // Ensure the target directory exists
+      const directoryExists = await exists(tempDirectory);
+      if (!directoryExists) {
+        try {
+          await mkdir(tempDirectory);
+        } catch (mkdirError) {
+          throw new Error(`Failed to create directory ${tempDirectory}: ${mkdirError instanceof Error ? mkdirError.message : 'Unknown error'}`);
+        }
+      }
+      
       let zipCreated = false;
       
       try {

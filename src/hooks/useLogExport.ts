@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Share } from 'react-native';
 import { Ditto, Logger } from '@dittolive/ditto';
-import { unlink } from '@dr.pogodin/react-native-fs';
+import { unlink, exists, mkdir, TemporaryDirectoryPath } from '@dr.pogodin/react-native-fs';
 
 interface UseLogExportResult {
   exportLogs: () => Promise<void>;
@@ -14,23 +14,12 @@ export const useLogExport = (ditto: Ditto): UseLogExportResult => {
   const [error, setError] = useState<string | null>(null);
   
   /**
-   * Extract the application directory from Ditto's persistence directory path
-   * This ensures we use a directory that's guaranteed to be writable
+   * Use the system's temporary directory for creating log files
+   * This ensures we have a writable location that exists
    */
   const getAppWritableDirectory = useCallback((): string => {
-    const persistenceDir = ditto.persistenceDirectory;
-    
-    // Extract parent directory (typically one or two levels up from the Ditto DB folder)
-    // Handle both forward slash and backslash paths
-    const pathSeparator = persistenceDir.includes('\\') ? '\\' : '/';
-    const pathParts = persistenceDir.split(pathSeparator);
-    
-    // Remove the last directory (likely the Ditto database folder)
-    // Go up one level to get to the app's writable directory
-    pathParts.pop();
-    const appDirectory = pathParts.join(pathSeparator);
-    return appDirectory;
-  }, [ditto]);
+    return TemporaryDirectoryPath;
+  }, []);
 
   const exportLogs = useCallback(async (): Promise<void> => {
     try {
@@ -44,6 +33,16 @@ export const useLogExport = (ditto: Ditto): UseLogExportResult => {
       // Use Ditto's persistence directory to derive a writable path
       const appDirectory = getAppWritableDirectory();
       const tempFilePath = `${appDirectory}${appDirectory.endsWith('/') ? '' : '/'}${fileName}`;
+      
+      // Ensure the target directory exists
+      const directoryExists = await exists(appDirectory);
+      if (!directoryExists) {
+        try {
+          await mkdir(appDirectory);
+        } catch (mkdirError) {
+          throw new Error(`Failed to create directory ${appDirectory}: ${mkdirError instanceof Error ? mkdirError.message : 'Unknown error'}`);
+        }
+      }
       
       let tempFileCreated = false;
       

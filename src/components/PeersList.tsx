@@ -9,7 +9,7 @@ import type { ListRenderItem } from 'react-native';
 import { Ditto } from '@dittolive/ditto';
 import { usePeers } from '../hooks/usePeers';
 import type { PeerInfo } from '../hooks/usePeers';
-import PeerItem from './PeerItem';
+import { PeerItem } from './PeerItem';
 
 interface PeersListProps {
   style?: any;
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 16,
     marginBottom: 8,
+    marginHorizontal: 16,
   },
   peerHeader: {
     flexDirection: 'row',
@@ -267,4 +268,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PeersList;
+export { PeersList };
