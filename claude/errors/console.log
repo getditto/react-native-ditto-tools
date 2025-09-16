@@ -1,0 +1,190 @@
+console.js:614 Running "example" with {"rootTag":11,"initialProps":{},"fabric":true}
+Welcome to React Native DevTools
+Debugger integration: Android Bridgeless (ReactHostImpl)
+console.js:614 Warning: Invariant Violation: View config getter callback for component `AndroidTextInput` must be a function (received `undefined`).
+
+This error is located at:
+    in AndroidTextInput (created by InternalTextInput)
+    in InternalTextInput (created by TextInput)
+    in TextInput (created by QueryEditorView)
+    in RCTView (created by View)
+    in View (created by QueryEditorView)
+    in QueryEditorView (created by QueryEditor)
+    in RCTView (created by View)
+    in View (created by QueryEditor)
+    in QueryEditor (created by QueryEditorScreen)
+    in RCTView (created by View)
+    in View (created by SafeAreaContainer)
+    in SafeAreaContainer (created by QueryEditorScreen)
+    in QueryEditorScreen (created by SceneView)
+    in StaticContainer
+    in EnsureSingleNavigator (created by SceneView)
+    in SceneView (created by CardContainer)
+    in RCTView (created by View)
+    in View (created by CardContainer)
+    in RCTView (created by View)
+    in View (created by CardContainer)
+    in RCTView (created by View)
+    in View
+    in CardSheet (created by Card)
+    in RCTView (created by View)
+    in View (created by Animated(View))
+    in Animated(View) (created by PanGestureHandler)
+    in PanGestureHandler (created by PanGestureHandler)
+    in PanGestureHandler (created by Card)
+    in RCTView (created by View)
+    in View (created by Animated(View))
+    in Animated(View) (created by Card)
+    in RCTView (created by View)
+    in View (created by Card)
+    in Card (created by CardContainer)
+    in CardContainer (created by CardStack)
+    in RNSScreen (created by Animated(Anonymous))
+    in Animated(Anonymous)
+    in Suspender (created by Freeze)
+    in Suspense (created by Freeze)
+    in Freeze (created by DelayedFreeze)
+    in DelayedFreeze
+    in InnerScreen (created by Screen)
+    in Screen (created by MaybeScreen)
+    in MaybeScreen (created by CardStack)
+    in RNSScreenContainer (created by ScreenContainer)
+    in ScreenContainer (created by MaybeScreenContainer)
+    in MaybeScreenContainer (created by CardStack)
+    in RCTView (created by View)
+    in View (created by Background)
+    in Background (created by CardStack)
+    in CardStack (created by HeaderShownContext)
+    in RNCSafeAreaProvider (created by SafeAreaProvider)
+    in SafeAreaProvider (created by SafeAreaProviderCompat)
+    in SafeAreaProviderCompat (created by StackView)
+    in RNGestureHandlerRootView (created by GestureHandlerRootView)
+    in GestureHandlerRootView (created by StackView)
+    in StackView (created by StackNavigator)
+    in PreventRemoveProvider (created by NavigationContent)
+    in NavigationContent
+    in Unknown (created by StackNavigator)
+    in StackNavigator (created by AppNavigator)
+    in EnsureSingleNavigator
+    in BaseNavigationContainer
+    in ThemeProvider
+    in NavigationContainerInner (created by AppNavigator)
+    in AppNavigator (created by App)
+    in DittoProvider (created by App)
+    in App
+    in RCTView (created by View)
+    in View (created by AppContainer)
+    in RCTView (created by View)
+    in View (created by AppContainer)
+    in AppContainer
+    in example(RootComponent)
+anonymous @ console.js:614
+reactConsoleErrorHandler @ ExceptionsManager.js:182
+overrideMethod @ backend.js:17416
+anonymous @ setUpDeveloperTools.js:62
+registerError @ LogBox.js:240
+anonymous @ LogBox.js:79
+reportException @ ExceptionsManager.js:111
+handleException @ ExceptionsManager.js:171
+showErrorDialog @ ReactFiberErrorDialog.js:55
+showErrorDialog @ ReactFabric-dev.js:13964
+logCapturedError @ ReactFabric-dev.js:13971
+anonymous @ ReactFabric-dev.js:14042
+callCallback @ ReactFabric-dev.js:6775
+commitCallbacks @ ReactFabric-dev.js:6823
+commitLayoutEffectOnFiber @ ReactFabric-dev.js:20112
+commitLayoutEffects @ ReactFabric-dev.js:21064
+commitRootImpl @ ReactFabric-dev.js:24250
+commitRoot @ ReactFabric-dev.js:24098
+performSyncWorkOnRoot @ ReactFabric-dev.js:22978
+flushSyncWorkAcrossRoots_impl @ ReactFabric-dev.js:5851
+flushSyncWorkOnAllRoots @ ReactFabric-dev.js:5805
+processRootScheduleInMicrotask @ ReactFabric-dev.js:5958
+anonymous @ ReactFabric-dev.js:6144
+console.js:614 Warning: Invariant Violation: View config getter callback for component `AndroidTextInput` must be a function (received `undefined`).
+
+This error is located at:
+    in AndroidTextInput (created by InternalTextInput)
+    in InternalTextInput (created by TextInput)
+    in TextInput (created by QueryEditorView)
+    in RCTView (created by View)
+    in View (created by QueryEditorView)
+    in QueryEditorView (created by QueryEditor)
+    in RCTView (created by View)
+    in View (created by QueryEditor)
+    in QueryEditor (created by QueryEditorScreen)
+    in RCTView (created by View)
+    in View (created by SafeAreaContainer)
+    in SafeAreaContainer (created by QueryEditorScreen)
+    in QueryEditorScreen (created by SceneView)
+    in StaticContainer
+    in EnsureSingleNavigator (created by SceneView)
+    in SceneView (created by CardContainer)
+    in RCTView (created by View)
+    in View (created by CardContainer)
+    in RCTView (created by View)
+    in View (created by CardContainer)
+    in RCTView (created by View)
+    in View
+    in CardSheet (created by Card)
+    in RCTView (created by View)
+    in View (created by Animated(View))
+    in Animated(View) (created by PanGestureHandler)
+    in PanGestureHandler (created by PanGestureHandler)
+    in PanGestureHandler (created by Card)
+    in RCTView (created by View)
+    in View (created by Animated(View))
+    in Animated(View) (created by Card)
+    in RCTView (created by View)
+    in View (created by Card)
+    in Card (created by CardContainer)
+    in CardContainer (created by CardStack)
+    in RNSScreen (created by Animated(Anonymous))
+    in Animated(Anonymous)
+    in Suspender (created by Freeze)
+    in Suspense (created by Freeze)
+    in Freeze (created by DelayedFreeze)
+    in DelayedFreeze
+    in InnerScreen (created by Screen)
+    in Screen (created by MaybeScreen)
+    in MaybeScreen (created by CardStack)
+    in RNSScreenContainer (created by ScreenContainer)
+    in ScreenContainer (created by MaybeScreenContainer)
+    in MaybeScreenContainer (created by CardStack)
+    in RCTView (created by View)
+    in View (created by Background)
+    in Background (created by CardStack)
+    in CardStack (created by HeaderShownContext)
+    in RNCSafeAreaProvider (created by SafeAreaProvider)
+    in SafeAreaProvider (created by SafeAreaProviderCompat)
+    in SafeAreaProviderCompat (created by StackView)
+    in RNGestureHandlerRootView (created by GestureHandlerRootView)
+    in GestureHandlerRootView (created by StackView)
+    in StackView (created by StackNavigator)
+    in PreventRemoveProvider (created by NavigationContent)
+    in NavigationContent
+    in Unknown (created by StackNavigator)
+    in StackNavigator (created by AppNavigator)
+    in EnsureSingleNavigator
+    in BaseNavigationContainer
+    in ThemeProvider
+    in NavigationContainerInner (created by AppNavigator)
+    in AppNavigator (created by App)
+    in DittoProvider (created by App)
+    in App
+    in RCTView (created by View)
+    in View (created by AppContainer)
+    in RCTView (created by View)
+    in View (created by AppContainer)
+    in AppContainer
+    in example(RootComponent)
+anonymous @ console.js:614
+reactConsoleErrorHandler @ ExceptionsManager.js:182
+overrideMethod @ backend.js:17416
+anonymous @ setUpDeveloperTools.js:62
+registerError @ LogBox.js:240
+anonymous @ LogBox.js:79
+reportException @ ExceptionsManager.js:111
+handleException @ ExceptionsManager.js:171
+handleError @ setUpErrorHandling.js:25
+reportFatalError @ error-guard.js:49

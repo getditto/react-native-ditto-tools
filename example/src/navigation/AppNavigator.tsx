@@ -9,6 +9,7 @@ import { PeersListScreen } from '../screens/PeersListScreen';
 import { SyncStatusScreen } from '../screens/SyncStatusScreen';
 import { PermissionsScreen } from '../screens/PermissionsScreen';
 import { DiskUsageScreen } from '../screens/DiskUsageScreen';
+import { QueryEditorScreen } from '../screens/QueryEditorScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -75,6 +76,15 @@ export const AppNavigator: React.FC = () => {
           component={DiskUsageScreen}
           options={{
             title: 'Disk Usage',
+            headerShown: true,
+            headerBackTitle: 'Back',
+          }}
+        />
+        <Stack.Screen
+          name="QueryEditor"
+          component={QueryEditorScreen}
+          options={{
+            title: 'Query Editor',
             headerShown: true,
             headerBackTitle: 'Back',
           }}

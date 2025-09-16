@@ -9,6 +9,7 @@ import { colors, typography, spacing } from '../styles';
 // Simple icon components using Unicode symbols
 const PeersIcon = () => <Text style={styles.icon}>📱</Text>;
 const DiskIcon = () => <Text style={styles.icon}>💾</Text>;
+const CodeIcon = () => <Text style={styles.icon}>👨‍💻</Text>;
 
 export const HomeScreen: React.FC = () => {
   return (
@@ -34,6 +35,16 @@ export const HomeScreen: React.FC = () => {
             iconColor={colors.diskIcon}
             iconComponent={<DiskIcon />}
             onPress={() => navigate('DiskUsage')}
+            isFirst
+          />
+        </MenuSection>
+
+        <MenuSection title="Ditto Store">
+          <MenuListItem
+            title="Query Editor"
+            iconColor={colors.codeIcon}
+            iconComponent={<CodeIcon />}
+            onPress={() => navigate('QueryEditor')}
             isFirst
           />
         </MenuSection>
