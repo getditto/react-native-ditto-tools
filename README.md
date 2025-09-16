@@ -55,7 +55,7 @@ After installing this library, you need to configure your React Native app for D
 
 ```typescript
 import React from 'react';
-import { DittoProvider, PeersList, DiskUsage, SystemSettings } from '@dittolive/ditto-react-native-tools';
+import { DittoProvider, PeersList, DiskUsage, SystemSettings, QueryEditor } from '@dittolive/ditto-react-native-tools';
 import { Ditto } from '@dittolive/ditto';
 
 // Initialize your Ditto instance
@@ -219,6 +219,89 @@ The component includes a built-in search feature that:
     paddingTop: 20               // Add top spacing
   }}
 />
+```
+
+### QueryEditor
+
+Execute DQL (Document Query Language) queries against your Ditto store with a comprehensive interface for query input, execution, and results display.
+
+```typescript
+import { QueryEditor } from '@dittolive/ditto-react-native-tools';
+
+<QueryEditor 
+  ditto={ditto}
+  style={{ flex: 1 }}
+/>
+```
+
+**Props:**
+- `ditto` (required): Your Ditto instance
+- `style?: ViewStyle` - Custom styling for the main container
+
+**Features:**
+- **Multi-line Query Input**: 3-line TextInput with word wrap and scrollable content for complex DQL queries
+- **Smart Execution**: Run button is disabled when query is empty, with loading state during execution
+- **Results Display**: Supports both SELECT queries (data results) and mutating queries (INSERT/UPDATE/DELETE with affected count)
+- **Performance Optimized**: Handles large result sets (20,000+ records) with FlatList virtualization
+- **Expandable JSON View**: Click any result row to view full JSON details in expandable format
+- **Export Functionality**: Share query results as formatted JSON using React Native's Share API
+- **Cross-platform Compatible**: Works on both iOS and Android with native share dialogs
+
+**Supported Query Types:**
+- **SELECT queries**: Display results in a scrollable list with expandable JSON details
+- **INSERT/UPDATE/DELETE**: Show affected record count and operation success status
+- **SHOW statements**: Display system information and configuration
+
+**Style Customization:**
+The QueryEditor component consists of three sub-components, each accepting custom styles:
+
+```typescript
+interface QueryEditorStyles {
+  container?: ViewStyle;           // Main container
+  editorView?: ViewStyle;          // Query input section  
+  headerView?: ViewStyle;          // Buttons section
+  resultsView?: ViewStyle;         // Results display section
+}
+
+<QueryEditor 
+  ditto={ditto}
+  style={{
+    container: { flex: 1, backgroundColor: '#f8f9fa' },
+    editorView: { backgroundColor: 'white', padding: 16 },
+    headerView: { backgroundColor: '#e9ecef', borderBottomWidth: 1 },
+    resultsView: { flex: 1, backgroundColor: 'white' }
+  }}
+/>
+```
+
+**Performance Features:**
+- **Virtual Scrolling**: Uses FlatList with `getItemLayout` for optimal performance with large datasets
+- **Memory Management**: Results are dematerialized to prevent memory leaks
+- **Efficient Rendering**: Only visible rows are rendered, supporting 20,000+ records smoothly
+- **Smart Loading States**: Execution and sharing buttons show activity indicators during operations
+
+**Usage Examples:**
+
+```typescript
+// Basic usage for query testing
+<QueryEditor ditto={ditto} />
+
+// With custom container styling
+<QueryEditor 
+  ditto={ditto}
+  style={{ 
+    flex: 1, 
+    backgroundColor: '#f5f5f5',
+    margin: 10 
+  }}
+/>
+
+// Example queries to try:
+// SELECT * FROM myCollection
+// INSERT INTO myCollection (name, value) VALUES ('test', 123)
+// UPDATE myCollection SET value = 456 WHERE name = 'test'
+// DELETE FROM myCollection WHERE name = 'test'
+// SHOW ALL
 ```
 
 ## Example App
