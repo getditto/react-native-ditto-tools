@@ -72,9 +72,10 @@ const config = {
     // Add custom resolver to handle the library module and ensure react-native consistency
     resolveRequest: (context, moduleName, platform) => {
       if (moduleName === '@dittolive/ditto-react-native-tools') {
-        // Resolve to the library's source directly
+        // Use the same entry point that external apps will use (built module)
+        // This ensures consistency between example app and external usage
         return {
-          filePath: path.resolve(libraryPath, 'src/index.ts'),
+          filePath: path.resolve(libraryPath, 'lib/module/index.js'),
           type: 'sourceFile',
         };
       }

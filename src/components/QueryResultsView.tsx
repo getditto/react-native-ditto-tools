@@ -149,7 +149,7 @@ const QueryResultsView: React.FC<QueryResultsViewProps> = ({
   if (isLoading) {
     return (
       <View style={mergedStyles.container}>
-        <Text style={mergedStyles.emptyText}>⏳ Executing query...</Text>
+        <Text style={mergedStyles.emptyText}>Executing query...</Text>
       </View>
     );
   }
@@ -159,7 +159,7 @@ const QueryResultsView: React.FC<QueryResultsViewProps> = ({
     return (
       <View style={mergedStyles.container}>
         <Text style={[mergedStyles.emptyText, { color: '#ff3b30' }]}>
-          ⚠️ {error}
+          Error: {error}
         </Text>
       </View>
     );

@@ -43,7 +43,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
     return (
       <View style={[styles.container, style]}>
         <View style={styles.centerContainer}>
-          <Text style={styles.loadingText}>⏳ Loading settings...</Text>
+          <Text style={styles.loadingText}>Loading settings...</Text>
           <Pressable
             style={({ pressed }) => [
               styles.refreshButton,
@@ -51,7 +51,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
             ]}
             onPress={handleRefresh}
           >
-            <Text style={styles.refreshIcon}>🔄</Text>
+            <Text style={styles.refreshButtonText}>↻</Text>
             <Text style={styles.refreshButtonText}>Force Refresh</Text>
           </Pressable>
         </View>
@@ -71,7 +71,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
             ]}
             onPress={handleRefresh}
           >
-            <Text style={styles.refreshIcon}>🔄</Text>
+            <Text style={styles.refreshButtonText}>↻</Text>
             <Text style={styles.refreshButtonText}>Retry</Text>
           </Pressable>
         </View>
@@ -102,7 +102,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({
           onPress={loading ? undefined : handleRefresh}
           disabled={loading}
         >
-          <Text style={styles.refreshIcon}>🔄</Text>
+          <Text style={styles.refreshButtonText}>↻</Text>
           <Text style={[styles.refreshButtonText, { color: loading ? '#999999' : '#007AFF' }]}>
             Refresh
           </Text>
@@ -189,10 +189,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 6,
-  },
-  refreshIcon: {
-    fontSize: 16,
-    marginRight: 4,
   },
   refreshButtonText: {
     fontSize: 14,

@@ -4,6 +4,7 @@ import {
   Text,
   Pressable,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import type { 
   ViewStyle, 
@@ -70,9 +71,11 @@ const QueryHeaderView: React.FC<QueryHeaderViewProps> = ({
             onPress={onShare}
             disabled={!canShare || isSharing}
           >
-            <Text style={mergedStyles.buttonText}>
-              {isSharing ? '📤' : '📤'}
-            </Text>
+            {isSharing ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={mergedStyles.buttonText}>Share</Text>
+            )}
           </Pressable>
           
           {/* Execute Button */}
@@ -85,9 +88,11 @@ const QueryHeaderView: React.FC<QueryHeaderViewProps> = ({
             onPress={onExecute}
             disabled={!canExecute || isExecuting}
           >
-            <Text style={mergedStyles.buttonText}>
-              {isExecuting ? '⏳' : '▶️'}
-            </Text>
+            {isExecuting ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={mergedStyles.buttonText}>Run</Text>
+            )}
           </Pressable>
         </View>
       </View>
@@ -95,7 +100,7 @@ const QueryHeaderView: React.FC<QueryHeaderViewProps> = ({
       {/* Error Display */}
       {error && (
         <View style={mergedStyles.errorContainer}>
-          <Text style={mergedStyles.errorText}>⚠️ {error}</Text>
+          <Text style={mergedStyles.errorText}>Error: {error}</Text>
         </View>
       )}
     </View>

@@ -122,7 +122,7 @@ const DiskUsage: React.FC<DiskUsageProps> = ({
   if (error) {
     return (
       <View style={[styles.container, styles.errorContainer, style]}>
-        <Text style={styles.errorText}>⚠️ Error loading disk usage</Text>
+        <Text style={styles.errorText}>Error: loading disk usage</Text>
         <Text style={styles.errorSubtext}>{error}</Text>
       </View>
     );
