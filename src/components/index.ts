@@ -9,3 +9,4 @@ export type { QueryEditorStyles } from './QueryEditor';
 export type { QueryEditorViewStyles } from './QueryEditorView';
 export type { QueryResultsViewStyles } from './QueryResultsView';
 export type { QueryHeaderViewStyles } from './QueryHeaderView';
+export { default as SystemSettings } from './SystemSettings';

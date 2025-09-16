@@ -27,4 +27,5 @@ export const colors = {
   systemIcon: '#8E44AD',   // Purple
   diskIcon: '#6C7B7F',     // Gray
   codeIcon: '#FF6B35',     // Orange
+  settingsIcon: '#FF9500', // Orange
 } as const;

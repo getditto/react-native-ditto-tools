@@ -7,6 +7,7 @@ export type RootStackParamList = {
   Permissions: undefined;
   DiskUsage: undefined;
   QueryEditor: undefined;
+  SystemSettings: undefined;
 };
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
