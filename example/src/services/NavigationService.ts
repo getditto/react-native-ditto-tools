@@ -6,6 +6,7 @@ export type RootStackParamList = {
   SyncStatus: undefined;
   Permissions: undefined;
   DiskUsage: undefined;
+  SystemSettings: undefined;
 };
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();

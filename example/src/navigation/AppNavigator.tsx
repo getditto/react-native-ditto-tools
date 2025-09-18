@@ -9,6 +9,7 @@ import { PeersListScreen } from '../screens/PeersListScreen';
 import { SyncStatusScreen } from '../screens/SyncStatusScreen';
 import { PermissionsScreen } from '../screens/PermissionsScreen';
 import { DiskUsageScreen } from '../screens/DiskUsageScreen';
+import { SystemSettingsScreen } from '../screens/SystemSettingsScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -75,6 +76,15 @@ export const AppNavigator: React.FC = () => {
           component={DiskUsageScreen}
           options={{
             title: 'Disk Usage',
+            headerShown: true,
+            headerBackTitle: 'Back',
+          }}
+        />
+        <Stack.Screen
+          name="SystemSettings"
+          component={SystemSettingsScreen}
+          options={{
+            title: 'System Settings',
             headerShown: true,
             headerBackTitle: 'Back',
           }}

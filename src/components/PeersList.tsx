@@ -5,14 +5,14 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import type { ListRenderItem } from 'react-native';
+import type { ListRenderItem, ViewStyle } from 'react-native';
 import { Ditto } from '@dittolive/ditto';
 import { usePeers } from '../hooks/usePeers';
 import type { PeerInfo } from '../hooks/usePeers';
 import { PeerItem } from './PeerItem';
 
 interface PeersListProps {
-  style?: any;
+  style?: ViewStyle;
   showConnectionDetails?: boolean;
   ditto: Ditto;
   headerComponent?: () => React.ReactElement;

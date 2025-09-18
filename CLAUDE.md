@@ -95,6 +95,19 @@ The example app demonstrates library usage with environment-based configuration:
 - Keep conversations concise. Do not give compliments. Do not apologize. Do not try to please the user. Do not be chatty or witty.  Most Ditto developers usually work on a Mac, but are required to occasionally work with Unix and Windows to test this project. 
 - If you need useful commands or scripts that are not installed on this machine, you can ask me to install them.
 - **ALWAYS KILL METRO WHEN DONE**: After completing iOS/Android builds or testing, always kill the Metro bundler using `lsof -ti:8081 | xargs kill -9` to free up the port.
+- **CRITICAL: ALWAYS TEST CHANGES**: You MUST test all component changes by building the library and running the example app on iOS/Android to verify components render correctly and function without errors. Never assume changes work without testing.
+- **MANDATORY BUILD-AND-WAIT PROCESS**: After making ANY changes to components or hooks:
+  1. ALWAYS run `yarn prepare` to build the library
+  2. STOP and ask the user to test the changes 
+  3. WAIT for user confirmation that changes work or don't work
+  4. NEVER continue with additional changes until user has tested and reported back
+  5. If user reports issues, debug systematically before making new changes
+  This prevents wasting time on multiple broken changes and allows early detection of problems.
+- **MANDATORY COMPONENT DOCUMENTATION**: Any new component created must have its styling props documented in README.md with:
+  1. Complete prop interface showing all style properties that can be passed
+  2. Description of what each style prop controls  
+  3. Usage examples showing how to pass custom styles
+  4. Consistent documentation format matching existing components
 
 # CRITICAL VERSION CONSTRAINTS
 - **NEVER CHANGE REACT NATIVE VERSION**: This project MUST use React Native 0.77.1 for both the library and example app. DO NOT change this version for any reason without explicit permission.
@@ -114,6 +127,22 @@ The example app demonstrates library usage with environment-based configuration:
 - Use `async/await` for asynchronous operations instead of `.then()/.catch()`.
 - Destructure props and state variables for readability.
 - Always TEST all code changes with builds and then running the app on iOS and Android.  Warnings should not be ignored.
+
+## Component Development and Testing Requirements
+- **CRITICAL**: When creating new components, you MUST thoroughly test them by actually running the app and navigating to the component to ensure it renders without errors
+- **Style Merging**: When merging default styles with custom styles, use object spread syntax (`{...defaultStyle, ...customStyle}`) NOT arrays (`[defaultStyle, customStyle]`) as React Native components expect style objects
+- **TextInput Compatibility**: Pay special attention to TextInput components which are prone to RCTSinglelineTextInputView errors when passed incorrect style formats
+- **Testing Process**: 
+  1. Build the library (`yarn prepare`)
+  2. Run the example app (`yarn ios`)
+  3. Navigate to the new component/screen
+  4. Test all interactive features (search, buttons, etc.)
+  5. Verify no render errors or crashes occur
+- **Error Investigation**: When render errors occur, immediately investigate by checking:
+  - Style prop formats (arrays vs objects)
+  - Component imports and exports
+  - Type definitions and prop passing
+- Never assume a component works based on successful builds alone - always test the actual rendering and functionality
 
 
 # TypeScript
