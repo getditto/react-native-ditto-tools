@@ -132,17 +132,6 @@ const QueryResultsView: React.FC<QueryResultsViewProps> = ({
     );
   }, [expandedItems, mergedStyles, toggleExpanded]);
 
-  // Performance optimization: provide getItemLayout for FlatList
-  const getItemLayout = useCallback((data: any, index: number) => {
-    const isExpanded = data && expandedItems.has(data[index]?.id);
-    const itemHeight = isExpanded ? 200 : 80; // Estimated heights
-    return {
-      length: itemHeight,
-      offset: itemHeight * index,
-      index,
-    };
-  }, [expandedItems]);
-
   const keyExtractor = useCallback((item: ResultItem) => item.id, []);
 
   // Handle loading state
@@ -220,7 +209,6 @@ const QueryResultsView: React.FC<QueryResultsViewProps> = ({
         data={resultItems}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        getItemLayout={getItemLayout}
         initialNumToRender={10}
         maxToRenderPerBatch={5}
         updateCellsBatchingPeriod={50}
