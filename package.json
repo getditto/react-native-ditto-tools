@@ -50,14 +50,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/react-native-ditto-tools.git"
+    "url": "git+https://github.com/getditto/react-native-ditto-tools.git"
   },
-  "author": "Your Name <your.email@example.com>",
+  "author": "DittoLive Inc <support@ditto.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yourusername/react-native-ditto-tools/issues"
+    "url": "https://github.com/getditto/react-native-ditto-tools/issues"
   },
-  "homepage": "https://github.com/yourusername/react-native-ditto-tools#readme",
+  "homepage": "https://github.com/getditto/react-native-ditto-tools#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
