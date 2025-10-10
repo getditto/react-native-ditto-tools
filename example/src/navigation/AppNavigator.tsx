@@ -10,6 +10,7 @@ import { SyncStatusScreen } from '../screens/SyncStatusScreen';
 import { PermissionsScreen } from '../screens/PermissionsScreen';
 import { DiskUsageScreen } from '../screens/DiskUsageScreen';
 import { SystemSettingsScreen } from '../screens/SystemSettingsScreen';
+import { QueryEditorScreen } from '../screens/QueryEditorScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -85,6 +86,15 @@ export const AppNavigator: React.FC = () => {
           component={SystemSettingsScreen}
           options={{
             title: 'System Settings',
+            headerShown: true,
+            headerBackTitle: 'Back',
+          }}
+        />
+        <Stack.Screen
+          name="QueryEditor"
+          component={QueryEditorScreen}
+          options={{
+            title: 'Query Editor',
             headerShown: true,
             headerBackTitle: 'Back',
           }}

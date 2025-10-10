@@ -1,4 +1,12 @@
 export { PeersList } from './PeersList';
 export { PeerItem } from './PeerItem';
 export { DiskUsage } from './DiskUsage';
+export { QueryEditor } from './QueryEditor';
+export { QueryEditorView } from './QueryEditorView';
+export { QueryResultsView } from './QueryResultsView';
+export { QueryHeaderView } from './QueryHeaderView';
+export type { QueryEditorStyles } from './QueryEditor';
+export type { QueryEditorViewStyles } from './QueryEditorView';
+export type { QueryResultsViewStyles } from './QueryResultsView';
+export type { QueryHeaderViewStyles } from './QueryHeaderView';
 export { default as SystemSettings } from './SystemSettings';

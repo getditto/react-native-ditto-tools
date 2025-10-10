@@ -1,4 +1,4 @@
-import {Ditto, IdentityOnlinePlayground, Logger} from '@dittolive/ditto';
+import {Ditto, IdentityOnlinePlayground, SyncSubscription, Logger} from '@dittolive/ditto';
 import {PermissionsAndroid, Platform} from 'react-native';
 import {
   DITTO_APP_ID,
@@ -17,6 +17,11 @@ export class DittoService {
   private static instance: DittoService;
   public ditto: Ditto | null = null;
   private isInitializing = false;
+  
+  public movieSubscription: SyncSubscription | undefined;
+  public commentsSubscription: SyncSubscription | undefined;
+  public tasksSubscription: SyncSubscription | undefined;
+
 
   private constructor() {
     this.appId = DITTO_APP_ID || '';
@@ -115,6 +120,12 @@ export class DittoService {
 
       //Disable sync with v3 peers, required for DQL
       this.ditto.disableSyncWithV3();
+
+      // Register subscriptions for testing
+      // https://docs.ditto.live/sdk/latest/sync/syncing-data#subscriptions
+      this.movieSubscription = this.ditto.sync.registerSubscription('SELECT * FROM movies');
+      this.commentsSubscription = this.ditto.sync.registerSubscription('SELECT * FROM comments');
+      this.tasksSubscription = this.ditto.sync.registerSubscription('SELECT * FROM tasks');
 
       // Disable DQL strict mode so that collection definitions are not required in DQL queries
       // https://docs.ditto.live/dql/strict-mode#introduction

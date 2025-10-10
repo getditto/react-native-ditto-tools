@@ -6,6 +6,7 @@ export type RootStackParamList = {
   SyncStatus: undefined;
   Permissions: undefined;
   DiskUsage: undefined;
+  QueryEditor: undefined;
   SystemSettings: undefined;
 };
 

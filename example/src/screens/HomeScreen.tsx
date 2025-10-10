@@ -6,11 +6,6 @@ import { MenuListItem } from '../components/MenuListItem';
 import { navigate } from '../services/NavigationService';
 import { colors, typography, spacing } from '../styles';
 
-// Simple icon components using Unicode symbols
-const PeersIcon = () => <Text style={styles.icon}>📱</Text>;
-const DiskIcon = () => <Text style={styles.icon}>💾</Text>;
-const SettingsIcon = () => <Text style={styles.icon}>⚙️</Text>;
-
 export const HomeScreen: React.FC = () => {
   return (
     <SafeAreaContainer>
@@ -22,8 +17,6 @@ export const HomeScreen: React.FC = () => {
         <MenuSection title="Network">
           <MenuListItem
             title="Peers List"
-            iconColor={colors.networkIcon}
-            iconComponent={<PeersIcon />}
             onPress={() => navigate('PeersList')}
             isFirst
           />
@@ -32,17 +25,21 @@ export const HomeScreen: React.FC = () => {
         <MenuSection title="System">
           <MenuListItem
             title="Disk Usage"
-            iconColor={colors.diskIcon}
-            iconComponent={<DiskIcon />}
             onPress={() => navigate('DiskUsage')}
             isFirst
           />
           <MenuListItem
             title="System Settings"
-            iconColor={colors.settingsIcon}
-            iconComponent={<SettingsIcon />}
             onPress={() => navigate('SystemSettings')}
             isLast
+          />
+        </MenuSection>
+
+        <MenuSection title="Ditto Store">
+          <MenuListItem
+            title="Query Editor"
+            onPress={() => navigate('QueryEditor')}
+            isFirst
           />
         </MenuSection>
       </ScrollView>
@@ -62,8 +59,5 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.largeTitle,
     fontWeight: typography.weights.bold,
     color: colors.text,
-  },
-  icon: {
-    fontSize: 16,
   },
 });

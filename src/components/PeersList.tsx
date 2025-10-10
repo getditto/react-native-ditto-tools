@@ -97,7 +97,7 @@ const PeersList: React.FC<PeersListProps> = ({
   if (error) {
     return (
       <View style={[styles.container, styles.errorContainer, style]}>
-        <Text style={styles.errorText}>⚠️ Error loading peers</Text>
+        <Text style={styles.errorText}>Error: loading peers</Text>
         <Text style={styles.errorSubtext}>{error}</Text>
       </View>
     );
