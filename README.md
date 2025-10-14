@@ -1,6 +1,6 @@
 # @dittolive/ditto-react-native-tools
 
-Diagonistic and Debugging Tools for Ditto in React Native 
+## Diagonistic and Debugging Tools for Ditto in React Native 
 
 > **⚠️ Platform Compatibility Notice**  
 > These tools currently do not support the **React Native MacOS platform**. They are designed for mobile (iOS, Android) platforms where Ditto's peer-to-peer functionality and file system access are available.
@@ -9,12 +9,15 @@ Diagonistic and Debugging Tools for Ditto in React Native
 
 This library requires the following peer dependencies to be installed in your app:
 
-- `@dittolive/ditto` - Core Ditto SDK
+- `@dittolive/ditto` - Core Ditto SDK (>=4.11.6 - Tested on 4.11.6 and 4.12.2)
 - `@dr.pogodin/react-native-fs` - File system operations for log export and data directory cleanup
 - `react-native-zip-archive` - Directory compression for data export functionality
 
 > **⚠️ iOS Target Version**  
-> Some tools require iOS version 15.5 or higher. You may need to update your iOS target version. 
+> Some tools require iOS version 15.5 or higher. You may need to update your iOS target version.  
+
+> **⚠️ @dr.pogodin/react-native-fs Version**  
+> The required version of `@dr.pogodin/react-native-fs` depends on your React Native version. Please refer to the [@dr.pogodin/react-native-fs releases](https://github.com/birdofpreyru/react-native-fs/releases) to select the correct version for your project.
 
 ## Installation
 
@@ -304,7 +307,7 @@ interface QueryEditorStyles {
 // SHOW ALL
 ```
 
-## Example App
+# Example App
 
 This repository includes a fully functional example app demonstrating all features. See the [example directory](./example) for setup instructions and implementation details.
 
@@ -366,7 +369,6 @@ After the initial setup, changes to the library source code will be immediately 
    ```bash
    cd example
    ./clear-cache.sh
-   npx expo prebuild --clean
    ```
 
 3. **Start Metro** (if not already running):
@@ -477,15 +479,13 @@ The example app uses environment variables for Ditto configuration. After changi
 
 > **Note**: Environment variables are compiled into the JavaScript bundle at build time, so you must rebuild the app after changing `.env` values.
 
-## Credits
+# Credits
 
 This library utilizes the following open-source projects:
-
-### Core Dependencies
-- **[Ditto](https://github.com/getditto/ditto)** - Edge sync platform for building real-time collaborative apps
-
-### Export Functionality  
 - **[@dr.pogodin/react-native-fs](https://github.com/dr-pogodin-react-native/react-native-fs)** - File system access for React Native apps
 - **[react-native-zip-archive](https://github.com/mockingbot/react-native-zip-archive)** - ZIP archive creation and extraction for React Native
 
 We greatly appreciate the maintainers and contributors of these projects for making this library possible.
+
+## Core Dependencies
+- **[Ditto](https://github.com/getditto/ditto)** - Edge sync platform for building real-time collaborative apps

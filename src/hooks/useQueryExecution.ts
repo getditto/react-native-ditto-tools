@@ -46,18 +46,22 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
       setCachedJsonStrings(new Map());
 
       // Execute the query without arguments
-      const queryResult: QueryResult = await ditto.store.execute(query);
-
+      const queryResult = await ditto.store.execute(query) as QueryResult;
+      
+      // Quick validation
+      if (!queryResult) {
+        throw new Error('QueryResult is null or undefined');
+      }
+      
       // Check if this is a mutating query
       let mutatedIDs: Array<any> | undefined;
       try {
         // Try to get mutated document IDs (will be undefined for SELECT queries)
         mutatedIDs = queryResult.mutatedDocumentIDs();
-      } catch {
+      } catch (mutatedError) {
         // Not a mutating query
       }
-
-      const isMutatingQuery = mutatedIDs !== undefined;
+      const isMutatingQuery = (Array.isArray(mutatedIDs) && mutatedIDs.length > 0);
 
       if (isMutatingQuery) {
         // For mutating queries, show the mutated IDs and commit ID
@@ -83,9 +87,9 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
           
           // Parse the JSON for the processed item
           try {
-            const parsed = JSON.parse(jsonString);
+            const parsed = JSON.parse(jsonCache.get(i)!);
             processedItems.push(parsed);
-          } catch {
+          } catch (parseError) {
             // If JSON parsing fails, use the raw value
             processedItems.push(item.value);
           }
@@ -94,7 +98,6 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
           try {
             item.dematerialize();
           } catch (error) {
-            console.warn('Failed to dematerialize item:', error);
           }
         }
 

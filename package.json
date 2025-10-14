@@ -1,6 +1,6 @@
 {
   "name": "@dittolive/ditto-react-native-tools",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "React Native library for Ditto tools integration",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -23,20 +23,17 @@
   },
 
   "devDependencies": {
-    "@dittolive/ditto": "4.11.4",
-    "@types/react": "^18.2.0",
-    "@types/react-native": "^0.73.0",
+    "@dittolive/ditto": "4.11.6",
     "react-native-builder-bob": "^0.20.0",
-    "@dr.pogodin/react-native-fs": "^2.35.1",
-    "react-native-zip-archive": "^7.0.2",
     "typescript": "^5.9.2"
   },
   "peerDependencies": {
     "@dittolive/ditto": ">=4.11.4",
     "react": "*",
     "react-native": "*",
-    "@dr.pogodin/react-native-fs": "^2.35.1",
-    "react-native-zip-archive": "^7.0.2"
+    "@types/react": "*",
+    "@dr.pogodin/react-native-fs": ">=2.22.0",
+    "react-native-zip-archive": ">=7.0.2"
   },
   "resolutions": {
     "react-native": "0.77.1"

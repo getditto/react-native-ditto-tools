@@ -18,6 +18,12 @@ const config = {
     libraryPath, // Parent directory (library source)
   ],
   
+  // Enable new architecture support
+  transformer: {
+    // Enable new architecture transforms
+    unstable_allowRequireContext: true,
+  },
+  
   resolver: {
     // Only use example's node_modules as primary resolution
     nodeModulesPaths: [
