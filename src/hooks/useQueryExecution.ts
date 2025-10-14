@@ -82,12 +82,8 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
           const item = items[i] as QueryResultItem;
           
           // Get the JSON string for caching
-          try {
-            const jsonString = item.jsonString();
-            jsonCache.set(i, jsonString);
-          } catch (jsonError) {
-            throw jsonError;
-          }
+          const jsonString = item.jsonString();
+          jsonCache.set(i, jsonString);
           
           // Parse the JSON for the processed item
           try {
