@@ -366,7 +366,6 @@ After the initial setup, changes to the library source code will be immediately 
    ```bash
    cd example
    ./clear-cache.sh
-   npx expo prebuild --clean
    ```
 
 3. **Start Metro** (if not already running):

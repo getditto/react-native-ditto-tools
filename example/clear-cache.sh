@@ -70,15 +70,11 @@ then
     npm install 
 
     # Install pods after npm install
-    if command -v pod &> /dev/null && [ -f "ios/Podfile" ]; then
-        echo "🍫 Installing CocoaPods..."
-        cd ios
-        pod install
-        cd ..
-        echo "✅ CocoaPods installation complete!"
-    else
-        echo "⚠️ CocoaPods not available or Podfile not found, skipping pod install"
-    fi
+    echo "🍫 Installing CocoaPods..."
+    cd example/ios
+    npx pod install 
+    cd ..
+    echo "✅ CocoaPods installation complete!"
 else
     echo "⏭️ Skipping node_modules removal"
 fi
