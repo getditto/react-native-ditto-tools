@@ -61,7 +61,7 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
       } catch (mutatedError) {
         // Not a mutating query
       }
-      const isMutatingQuery = (mutatedIDs !== undefined && mutatedIDs.length > 0);
+      const isMutatingQuery = (Array.isArray(mutatedIDs) && mutatedIDs.length > 0);
 
       if (isMutatingQuery) {
         // For mutating queries, show the mutated IDs and commit ID
