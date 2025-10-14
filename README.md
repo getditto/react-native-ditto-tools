@@ -17,7 +17,7 @@ This library requires the following peer dependencies to be installed in your ap
 > Some tools require iOS version 15.5 or higher. You may need to update your iOS target version.  
 
 > **⚠️ @dr.pogodin/react-native-fs Version**  
-> Some tools require iOS version 15.5 or higher. You may need to update your iOS target version.  Refer to [@dr.pogodin/react-native-fs](https://github.com/birdofpreyru/react-native-fs/releases) documentation which version you should use based on the version of React Native you are using.
+> The required version of `@dr.pogodin/react-native-fs` depends on your React Native version. Please refer to the [@dr.pogodin/react-native-fs releases](https://github.com/birdofpreyru/react-native-fs/releases) to select the correct version for your project.
 
 ## Installation
 
