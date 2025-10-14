@@ -5,10 +5,8 @@ if (typeof global !== 'undefined') {
   // Polyfill for missing feature flags in new architecture
   if (!global.__turboModuleProxy) {
     global.__turboModuleProxy = null;
-  }
-  
-  // Add feature flag polyfill
-  if (!global.__turboModuleProxy) {
+
+    // Add feature flag polyfill
     const originalConsoleError = console.error;
     console.error = (...args) => {
       // Filter out the specific feature flag error
