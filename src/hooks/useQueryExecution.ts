@@ -91,7 +91,11 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
           }
 
           // Dematerialize to free memory
-          item.dematerialize();
+          try {
+            item.dematerialize();
+          } catch (error) {
+            console.warn('Failed to dematerialize item:', error);
+          }
         }
 
         setCachedJsonStrings(jsonCache);

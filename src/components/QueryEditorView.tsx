@@ -42,6 +42,8 @@ const QueryEditorView: React.FC<QueryEditorViewProps> = ({
         multiline
         autoCapitalize="none"
         autoCorrect={false}
+        accessibilityLabel="DQL Query Input"
+        accessibilityHint="Enter your DQL query here"
       />
     </View>
   );
