@@ -13,10 +13,10 @@ This library requires the following peer dependencies to be installed in your ap
 - `@dr.pogodin/react-native-fs` - File system operations for log export and data directory cleanup
 - `react-native-zip-archive` - Directory compression for data export functionality
 
-> **⚠️ iOS Target Version**  
+> [!WARNING] 
 > Some tools require iOS version 15.5 or higher. You may need to update your iOS target version.  
 
-> **⚠️ @dr.pogodin/react-native-fs Version**  
+> [!NOTE] 
 > The required version of `@dr.pogodin/react-native-fs` depends on your React Native version. Please refer to the [@dr.pogodin/react-native-fs releases](https://github.com/birdofpreyru/react-native-fs/releases) to select the correct version for your project.
 
 ## Installation
@@ -58,7 +58,7 @@ After installing this library, you need to configure your React Native app for D
 
 ```typescript
 import React from 'react';
-import { DittoProvider, PeersList, DiskUsage, SystemSettings, QueryEditor } from '@dittolive/ditto-react-native-tools';
+import { PeersList, DiskUsage, SystemSettings, QueryEditor } from '@dittolive/ditto-react-native-tools';
 import { Ditto } from '@dittolive/ditto';
 
 // Initialize your Ditto instance
@@ -70,17 +70,17 @@ const ditto = new Ditto({
 
 function App() {
   return (
-    <DittoProvider ditto={ditto}>
+    <>
       <PeersList 
-        showConnectionDetails={true}
-        emptyMessage="No peers discovered yet"
+        ditto={ditto}
       />
-      {/* Or use other components */}
-      <SystemSettings ditto={ditto} />
-    </DittoProvider>
+    </>
   );
 }
 ```
+
+>[!NOTE] 
+> Ditto instance should always be kept in a [provider](https://react.dev/reference/react/createContext#provider). 
 
 ## Components
 
@@ -133,14 +133,12 @@ import { DiskUsage } from '@dittolive/ditto-react-native-tools';
 <DiskUsage 
   ditto={ditto}
   style={{ flex: 1 }}
-  onExportDataDirectory={() => console.log('Export data')}
 />
 ```
 
 **Props:**
 - `ditto` (required): Your Ditto instance
 - `style?: ViewStyle` - Custom styling for the main container
-- `onExportDataDirectory?: () => void` - Callback when export data directory button is pressed
 
 **Features:**
 - **Automatic Log Export**: The "Export Logs" button uses Ditto's built-in `Logger.exportToFile()` method to save log files
@@ -311,7 +309,7 @@ interface QueryEditorStyles {
 
 This repository includes a fully functional example app demonstrating all features. See the [example directory](./example) for setup instructions and implementation details.
 
-## Development
+## Development of the Library
 
 ### Testing Changes During Development
 
@@ -359,7 +357,7 @@ To stop packages from bleeding from the library to the example app, the example 
 ```
 
 
-#### Development Workflow
+#### Development for the Library Workflow
 
 After the initial setup, changes to the library source code will be immediately available in the example app:
 
@@ -388,7 +386,7 @@ After the initial setup, changes to the library source code will be immediately 
 
 > **Important**: The Metro configuration includes a custom resolver that directly points to the library's TypeScript source files, enabling live updates without compilation.
 
-### Deploying to Connected Android Device
+### Deploying example app to connected Android Device
 
 To build and deploy the example app to a connected Android device:
 
