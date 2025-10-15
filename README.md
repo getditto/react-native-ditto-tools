@@ -79,7 +79,7 @@ function App() {
 }
 ```
 
->[!NOTE] 
+> [!NOTE] 
 > Ditto instance should always be kept in a [provider](https://react.dev/reference/react/createContext#provider). 
 
 ## Components
