@@ -13,7 +13,7 @@ This library requires the following peer dependencies to be installed in your ap
 - `@dr.pogodin/react-native-fs` - File system operations for log export and data directory cleanup
 - `react-native-zip-archive` - Directory compression for data export functionality
 
-> [!WARNING] 
+> [!warning] 
 > Some tools require iOS version 15.5 or higher. You may need to update your iOS target version.  
 
 > [!NOTE] 
