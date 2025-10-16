@@ -1,6 +1,41 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Example App for @dittolive/ditto-react-native-tools
 
-# Getting Started
+This is an example React Native application that demonstrates the usage of the **@dittolive/ditto-react-native-tools** library. This example app showcases all the diagnostic and debugging tools available for Ditto in React Native applications.
+
+## About the Tools
+
+The **@dittolive/ditto-react-native-tools** library provides comprehensive diagnostic and debugging tools for Ditto in React Native applications, including:
+
+- **PeersList** - Display and monitor Ditto peer connections in real-time
+- **DiskUsage** - Monitor and display Ditto's disk usage breakdown with export functionality  
+- **SystemSettings** - Display all Ditto system settings using the `SHOW ALL` DQL statement
+- **QueryEditor** - Execute DQL (Document Query Language) queries against your Ditto store
+
+For more detailed information about the library, components, and features, see the [main README](../README.md).
+
+## Example App Features
+
+This example app demonstrates all the tools available in the library:
+
+- **Home Screen** - Navigation hub with access to all tools
+- **Peers List** - Real-time monitoring of Ditto peer connections
+- **Disk Usage** - Monitor Ditto's disk usage with export capabilities
+- **System Settings** - View and search all Ditto system settings
+- **Query Editor** - Execute DQL queries and view results
+- **Sync Status** - Monitor Ditto synchronization status
+- **Permissions** - Manage app permissions for Ditto functionality
+
+## Prerequisites
+
+Before running this example app, ensure you have:
+
+1. **Ditto Setup** - Follow the [Ditto React Native Setup Guide](https://docs.ditto.live/sdk/latest/quickstarts/react-native)
+2. **Required Dependencies** - The example app includes all necessary peer dependencies:
+   - `@dittolive/ditto` (>=4.11.6)
+   - `@dr.pogodin/react-native-fs`
+   - `react-native-zip-archive`
+
+## Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
@@ -94,10 +129,19 @@ If you're having issues getting the above steps to work, see the [Troubleshootin
 
 # Learn More
 
-To learn more about React Native, take a look at the following resources:
+To learn more about the tools and how to integrate them into your own app:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- **[Main Library README](../README.md)** - Complete documentation of all components and features
+- **[Ditto React Native Setup](https://docs.ditto.live/sdk/latest/quickstarts/react-native)** - Official Ditto setup guide for React Native
+- **[Ditto Documentation](https://docs.ditto.live/)** - Complete Ditto SDK documentation
+- **[React Native Website](https://reactnative.dev)** - Learn more about React Native development
+
+## Integration in Your App
+
+To use these tools in your own React Native app:
+
+1. Install the library: `npm install @dittolive/ditto-react-native-tools`
+2. Import the components you need: `import { PeersList, DiskUsage } from '@dittolive/ditto-react-native-tools'`
+3. Pass your Ditto instance as a prop: `<PeersList ditto={yourDittoInstance} />`
+
+See the [main README](../README.md) for detailed usage examples and component documentation.
