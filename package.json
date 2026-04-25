@@ -52,7 +52,7 @@
   "author": "DittoLive Inc <support@ditto.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://support.ditto.live"
+    "url": "https://support.ditto.com"
   },
   "homepage": "https://github.com/getditto/react-native-ditto-tools#readme",
   "publishConfig": {
