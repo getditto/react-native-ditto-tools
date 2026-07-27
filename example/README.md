@@ -31,7 +31,7 @@ Before running this example app, ensure you have:
 
 1. **Ditto Setup** - Follow the [Ditto React Native Setup Guide](https://docs.ditto.live/sdk/latest/quickstarts/react-native)
 2. **Required Dependencies** - The example app includes all necessary peer dependencies:
-   - `@dittolive/ditto` (>=4.11.6)
+   - `@dittolive/ditto` (>=5.0.0)
    - `@dr.pogodin/react-native-fs`
    - `react-native-zip-archive`
 
