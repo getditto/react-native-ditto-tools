@@ -74,28 +74,29 @@ const QueryResultsView: React.FC<QueryResultsViewProps> = ({
     });
   }, []);
 
-  // Generate optimized result items for FlatList
+  // Generate result items for FlatList — memoized only on results.items to avoid
+  // re-stringifying the entire dataset when a single row is expanded/collapsed.
   const resultItems: ResultItem[] = React.useMemo(() => {
     if (!results || !results.items) return [];
-    
+
     return results.items.map((item, index) => {
       const jsonString = JSON.stringify(item, null, 2);
-      const preview = jsonString.length > 100 ? 
-        jsonString.substring(0, 100) + '...' : 
+      const preview = jsonString.length > 100 ?
+        jsonString.substring(0, 100) + '...' :
         jsonString;
-      
-      // Generate a unique ID for each item
-      const itemId = item._id || `item_${index}`;
-      
+
+      // Generate a unique ID for each item, coercing to string for consistent Set lookups
+      const itemId = item._id != null ? String(item._id) : `item_${index}`;
+
       return {
         id: itemId,
         data: item,
         jsonString,
-        isExpanded: expandedItems.has(itemId),
+        isExpanded: false, // Expansion state is computed per-row in renderItem
         preview,
       };
     });
-  }, [results?.items, expandedItems]);
+  }, [results?.items]);
 
   // Optimized renderItem with getItemLayout for performance
   const renderItem: ListRenderItem<ResultItem> = useCallback(({ item }) => {

@@ -18,7 +18,7 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
       <View style={styles.peerHeader}>
         <Text style={styles.deviceName}>{peer.deviceName || 'Unknown Device'}</Text>
         <View style={styles.statusContainer}>
-          {peer.isConnectedToDittoCloud && (
+          {peer.isConnectedToDittoServer && (
             <View style={styles.cloudBadge}>
               <Text style={styles.cloudBadgeText}>Cloud</Text>
             </View>
@@ -26,31 +26,20 @@ const PeerItem: React.FC<PeerItemProps> = ({ peer, showConnectionDetails }) => {
         </View>
       </View>
       
-      <Text style={styles.sdkVersion}>Peer ID: {peer.peerKeyString || 'Unknown'}</Text>
+      <Text style={styles.sdkVersion}>Peer ID: {peer.peerKey || 'Unknown'}</Text>
       <Text style={styles.sdkVersion}>SDK Version: {peer.dittoSdkVersion || 'Unknown'}</Text>
       
       {showConnectionDetails && peer.connections && (
         <View style={styles.connectionsContainer}>
           <Text style={styles.connectionsTitle}>Connections:</Text>
-          {Array.isArray(peer.connections) ? (
-            peer.connections.map((connection, index) => (
-              <React.Fragment key={`connection-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}-${index}`}>
-                <Text style={styles.connectionItem}>
-                  {connection.peerKeyString1} - {connection.connectionType}
-                </Text>
-                {index < peer.connections.length - 1 && <View style={styles.divider} />}
-              </React.Fragment>
-            ))
-          ) : (
-            Object.entries(peer.connections).map(([type, count], index, entries) => (
-              <React.Fragment key={type}>
-                <Text style={styles.connectionItem}>
-                  {type}: {String(count)}
-                </Text>
-                {index < entries.length - 1 && <View style={styles.divider} />}
-              </React.Fragment>
-            ))
-          )}
+          {peer.connections.map((connection, index) => (
+            <React.Fragment key={`connection-${connection.peer1 || 'unknown'}-${connection.connectionType || 'unknown'}-${index}`}>
+              <Text style={styles.connectionItem}>
+                {connection.peer1} - {connection.connectionType}
+              </Text>
+              {index < peer.connections.length - 1 && <View style={styles.divider} />}
+            </React.Fragment>
+          ))}
         </View>
       )}
     </View>

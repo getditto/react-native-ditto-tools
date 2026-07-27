@@ -52,7 +52,7 @@ const PeersList: React.FC<PeersListProps> = ({
         <View style={styles.peerHeader}>
           <Text style={styles.deviceName}>{localPeer?.deviceName || 'Unknown Device'}</Text>
           <View style={styles.statusContainer}>
-            {localPeer?.isConnectedToDittoCloud && (
+            {localPeer?.isConnectedToDittoServer && (
               <View style={styles.cloudBadge}>
                 <Text style={styles.cloudBadgeText}>Cloud</Text>
               </View>
@@ -64,22 +64,14 @@ const PeersList: React.FC<PeersListProps> = ({
         {localPeer?.connections && (
           <View style={styles.connectionsContainer}>
             <Text style={styles.connectionsTitle}>Local Connections:</Text>
-            {Array.isArray(localPeer.connections) ? (
-              localPeer.connections.map((connection, idx) => (
-                <React.Fragment key={`connection-${connection.peerKeyString1 || 'unknown'}-${connection.connectionType || 'unknown'}-${idx}`}>
-                  <Text style={styles.connectionItem}>
-                    {connection.peerKeyString1} - {connection.connectionType}
-                  </Text>
-                  <View style={styles.divider} />
-                </React.Fragment>
-              ))
-            ) : (
-              Object.entries(localPeer.connections).map(([type, count]) => (
-                <Text key={type} style={styles.connectionItem}>
-                  {type}: {String(count)}
+            {localPeer.connections.map((connection, idx) => (
+              <React.Fragment key={`connection-${connection.peer1 || 'unknown'}-${connection.connectionType || 'unknown'}-${idx}`}>
+                <Text style={styles.connectionItem}>
+                  {connection.peer1} - {connection.connectionType}
                 </Text>
-              ))
-            )}
+                <View style={styles.divider} />
+              </React.Fragment>
+            ))}
           </View>
         )}
         
@@ -91,8 +83,8 @@ const PeersList: React.FC<PeersListProps> = ({
     </>
   );
 
-  const keyExtractor = (item: PeerInfo) => 
-    item.peerKeyString || item.deviceName || item.address.pubkey.toString();
+  const keyExtractor = (item: PeerInfo, index: number) =>
+    item.peerKey || item.deviceName || `peer-${index}`;
 
   if (error) {
     return (
