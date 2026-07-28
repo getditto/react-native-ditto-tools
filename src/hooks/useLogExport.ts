@@ -68,8 +68,8 @@ export const useLogExport = (ditto: Ditto): UseLogExportResult => {
           try {
             await unlink(tempFilePath);
           } catch (cleanupError) {
-            // Re-throw cleanup errors to ensure they're not silently swallowed
-            throw new Error(`Failed to clean up temp file: ${cleanupError instanceof Error ? cleanupError.message : 'Unknown error'}`);
+            // Log but don't throw — cleanup failure shouldn't mask a successful export
+            console.warn(`Failed to clean up temp file ${tempFilePath}:`, cleanupError);
           }
         }
       }
