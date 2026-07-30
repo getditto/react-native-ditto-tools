@@ -2,10 +2,8 @@ export { PeersList, PeerItem, DiskUsage, QueryEditor, QueryEditorView, QueryResu
 export type { QueryEditorStyles, QueryEditorViewStyles, QueryResultsViewStyles, QueryHeaderViewStyles } from './components';
 export { usePeers, useDiskUsage, useLogExport, useDataDirectoryExport, useQueryExecution, useSystemSettings, useSettingsSearch } from './hooks';
 export type { PeerInfo, DiskUsageData, DiskUsageInfo, DiskUsageEntry } from './hooks';
-export type { 
-  SystemSetting, 
-  SystemSettingsStyles, 
-  SystemSettingsProps, 
-  UseSystemSettingsResult, 
-  UseSettingsSearchResult 
+export type {
+  SystemSetting,
+  UseSystemSettingsResult,
+  UseSettingsSearchResult
 } from './types';
