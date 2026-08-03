@@ -53,13 +53,15 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
         throw new Error('QueryResult is null or undefined');
       }
       
-      // Check if this is a mutating query
+      // In v5, mutatedDocumentIDsV2() returns an empty array for SELECT
+      // queries and a non-empty array for mutating queries (INSERT/UPDATE/DELETE).
+      // The try/catch is retained to guard against FFI-level failures; if the
+      // native call throws, we treat the result as non-mutating and continue.
       let mutatedIDs: Array<any> | undefined;
       try {
-        // Try to get mutated document IDs (will be undefined for SELECT queries)
-        mutatedIDs = queryResult.mutatedDocumentIDs();
+        mutatedIDs = queryResult.mutatedDocumentIDsV2();
       } catch (mutatedError) {
-        // Not a mutating query
+        // FFI error reading mutated IDs — safely ignore and treat as SELECT result.
       }
       const isMutatingQuery = (Array.isArray(mutatedIDs) && mutatedIDs.length > 0);
 
@@ -98,6 +100,10 @@ export const useQueryExecution = (ditto: Ditto): UseQueryExecutionResult => {
           try {
             item.dematerialize();
           } catch (error) {
+            // dematerialize() is a best-effort FFI cleanup call; if it fails
+            // (e.g. the item was already freed by the native layer), we can
+            // safely ignore the error — the item value has already been captured
+            // into processedItems above.
           }
         }
 

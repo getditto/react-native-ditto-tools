@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Share } from 'react-native';
 import { Ditto } from '@dittolive/ditto';
 import { zip } from 'react-native-zip-archive';
-import { unlink, exists, mkdir, TemporaryDirectoryPath, DocumentDirectoryPath } from '@dr.pogodin/react-native-fs';
+import { unlink, exists, mkdir, TemporaryDirectoryPath } from '@dr.pogodin/react-native-fs';
 
 interface UseDataDirectoryExportResult {
   exportDataDirectory: () => Promise<void>;
@@ -30,11 +30,9 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const zipFileName = `ditto-data-${timestamp}.zip`;
       
-      // Get paths - resolve relative Ditto path to absolute path
-      const relativePersistenceDir = ditto.persistenceDirectory;
-      const sourceDirectory = relativePersistenceDir.startsWith('/') 
-        ? relativePersistenceDir 
-        : `${DocumentDirectoryPath}/${relativePersistenceDir}`;
+      // Get the absolute persistence directory path. In v5,
+      // absolutePersistenceDirectory always returns an absolute path.
+      const sourceDirectory = ditto.absolutePersistenceDirectory;
       const tempDirectory = getTempDirectory();
       const zipFilePath = `${tempDirectory}${tempDirectory.endsWith('/') ? '' : '/'}${zipFileName}`;
       
@@ -73,8 +71,8 @@ export const useDataDirectoryExport = (ditto: Ditto): UseDataDirectoryExportResu
           try {
             await unlink(zipFilePath);
           } catch (cleanupError) {
-            // Throw cleanup errors so developers know about manual cleanup needed
-            throw new Error(`Failed to delete temporary zip file at ${zipFilePath}. You may need to manually delete this file to free disk space. Original cleanup error: ${cleanupError instanceof Error ? cleanupError.message : 'Unknown error'}`);
+            // Log but don't throw — cleanup failure shouldn't mask a successful export
+            console.warn(`Failed to delete temporary zip file at ${zipFilePath}. Manual cleanup may be needed.`, cleanupError);
           }
         }
       }

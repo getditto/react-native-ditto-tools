@@ -1,6 +1,6 @@
 {
   "name": "@dittolive/ditto-react-native-tools",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React Native library for Ditto tools integration",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -21,22 +21,36 @@
     "prepare": "bob build",
     "example": "yarn --cwd example"
   },
-
   "devDependencies": {
-    "@dittolive/ditto": "4.11.6",
+    "@dittolive/ditto": "5.0.1",
     "react-native-builder-bob": "^0.20.0",
     "typescript": "^5.9.2"
   },
   "peerDependencies": {
-    "@dittolive/ditto": ">=4.11.4",
+    "@dittolive/ditto": ">=5.0.1 <6.0.0",
     "react": "*",
     "react-native": "*",
     "@types/react": "*",
     "@dr.pogodin/react-native-fs": ">=2.22.0",
     "react-native-zip-archive": ">=7.0.2"
   },
+  "overrides": {
+    "lodash": "4.18.0",
+    "@xmldom/xmldom": "0.8.13",
+    "node-forge": "1.4.0",
+    "picomatch@^2": "2.3.2",
+    "picomatch@^3": "3.0.2",
+    "fast-xml-parser": "4.5.5",
+    "undici": "6.24.0",
+    "tar": "7.5.11",
+    "minimatch@^3": "3.1.4",
+    "minimatch@^5": "5.1.8",
+    "minimatch@^9": "9.0.7",
+    "shell-quote": "1.8.4",
+    "ws": "7.5.11"
+  },
   "resolutions": {
-    "react-native": "0.77.1"
+    "react-native": "0.81.5"
   },
   "keywords": [
     "react-native",
@@ -52,11 +66,12 @@
   "author": "DittoLive Inc <support@ditto.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://support.ditto.live"
+    "url": "https://support.ditto.com"
   },
   "homepage": "https://github.com/getditto/react-native-ditto-tools#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "react-native-builder-bob": {
     "source": "src",
