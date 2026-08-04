@@ -2,6 +2,11 @@
 
 ## Diagonistic and Debugging Tools for Ditto in React Native 
 
+> [!IMPORTANT]
+> This repository is a read-only mirror maintained by Ditto's SDK release
+> process. Pull requests opened outside that process are not accepted. To report
+> a problem or request a change, contact Ditto Support (<support@ditto.com>).
+
 > **⚠️ Platform Compatibility Notice**  
 > These tools currently do not support the **React Native MacOS platform**. They are designed for mobile (iOS, Android) platforms where Ditto's peer-to-peer functionality and file system access are available.
 
@@ -9,7 +14,7 @@
 
 This library requires the following peer dependencies to be installed in your app:
 
-- `@dittolive/ditto` - Core Ditto SDK (>=4.11.6 - Tested on 4.11.6 and 4.12.2)
+- `@dittolive/ditto` - Core Ditto SDK (>=5.0.1 <6.0.0)
 - `@dr.pogodin/react-native-fs` - File system operations for log export and data directory cleanup
 - `react-native-zip-archive` - Directory compression for data export functionality
 
@@ -57,18 +62,38 @@ After installing this library, you need to configure your React Native app for D
 ## Usage
 
 ```typescript
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PeersList, DiskUsage, SystemSettings, QueryEditor } from '@dittolive/ditto-react-native-tools';
-import { Ditto } from '@dittolive/ditto';
+import { Authenticator, Ditto, DittoConfig } from '@dittolive/ditto';
 
-// Initialize your Ditto instance
-const ditto = new Ditto({
-  type: 'offlinePlayground',
-  appID: 'your-app-id',
-  offlineToken: 'your-offline-token',
-});
+// Initialize your Ditto instance using the v5 API
+const config = new DittoConfig(
+  'your-app-id',
+  { mode: 'server', url: 'https://your-auth-url' },
+);
 
 function App() {
+  const [ditto, setDitto] = useState<Ditto | null>(null);
+
+  useEffect(() => {
+    Ditto.open(config).then(async (instance) => {
+      // Server mode requires an auth expiration handler to be registered
+      // before sync.start(); without it sync.start() throws.
+      await instance.auth.setExpirationHandler(async (d) => {
+        if (d.auth.loginSupported) {
+          await d.auth.login('your-playground-token', Authenticator.DEVELOPMENT_PROVIDER);
+        }
+      });
+      if (instance.auth.loginSupported) {
+        await instance.auth.login('your-playground-token', Authenticator.DEVELOPMENT_PROVIDER);
+      }
+      instance.sync.start();
+      setDitto(instance);
+    });
+  }, []);
+
+  if (!ditto) return null;
+
   return (
     <>
       <PeersList 
@@ -463,19 +488,15 @@ yarn install --force
 
 ### Environment Variables
 
-The example app uses environment variables for Ditto configuration. After changing values in the `.env` file:
+The example app reads Ditto credentials from `example/.env`. Copy the template and fill in values from the [Ditto Portal](https://portal.ditto.live):
 
-1. **Restart Metro** with cache reset:
-   ```bash
-   npx react-native start --reset-cache
-   ```
+```bash
+cp example/.env.sample example/.env
+```
 
-2. **Rebuild the app** to pick up the new environment values:
-   ```bash
-   yarn ios --simulator="iPhone 16 Pro"
-   ```
+Required keys: `DITTO_APP_ID`, `DITTO_PLAYGROUND_TOKEN`, `DITTO_AUTH_URL`.
 
-> **Note**: Environment variables are compiled into the JavaScript bundle at build time, so you must rebuild the app after changing `.env` values.
+Values are compiled into the JS bundle at build time, so rebuild the app after changing `.env`.
 
 # Credits
 
@@ -486,4 +507,4 @@ This library utilizes the following open-source projects:
 We greatly appreciate the maintainers and contributors of these projects for making this library possible.
 
 ## Core Dependencies
-- **[Ditto](https://github.com/getditto/ditto)** - Edge sync platform for building real-time collaborative apps
+- **[Ditto](https://www.npmjs.com/package/@dittolive/ditto)** - Edge sync platform for building real-time collaborative apps

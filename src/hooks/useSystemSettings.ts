@@ -40,7 +40,12 @@ export const useSystemSettings = (ditto: Ditto): UseSystemSettingsResult => {
     
     // Handle objects/arrays by converting to JSON string
     if (typeof value === 'object') {
-      return JSON.stringify(value);
+      try {
+        return JSON.stringify(value);
+      } catch {
+        // Fallback for circular structures, BigInt, or other non-serializable values
+        return '[unserializable object]';
+      }
     }
     
     // Default to string conversion
